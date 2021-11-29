@@ -42,6 +42,13 @@ class ProjectDetailsSerializer(serializers.ModelSerializer):
         model=ProjectDetails
         fields=['registration','booking_date','total_value','booking_amount','project_description','package']
 
+class ProjectDetailsSerilizer1(serializers.ModelSerializer):
+    package=PackageSerializer()
+    class Meta:
+        model=ProjectDetails
+        fields=['registration','booking_date','total_value',
+                'booking_amount','project_description','package']
+                
 class TeamSerializer(serializers.ModelSerializer):
     class Meta:
         model=Team

@@ -5,19 +5,28 @@ from django.dispatch import receiver
 
 # Create your models here.
 class Registration(AbstractUser):
+
+    """It is store data into registration table"""
+
     mobile_no=models.CharField(max_length=13)
     created_at=models.DateTimeField(auto_now_add=True)
     updated_at=models.DateTimeField(auto_now=True)
     def __str__(self):
-        return self.mobile_no
+        return self.username
 
 @receiver(pre_save, sender=Registration)
-def my_handler(sender,**kwargs):
+def encript_password(sender,**kwargs):
+
+    """This function is used to encript password"""
+
     obj=kwargs['instance']
     password=obj.password
     obj.set_password(password)
 
 class PersonalDetails(models.Model):
+
+    """This model is used to stores personal details into table"""
+
     registrations=models.ForeignKey(Registration,related_name='personal_details',on_delete=models.CASCADE)
     gender=models.CharField(max_length=10,choices=(('Male','Male'),('Female','Female')))
     dob=models.DateField()
@@ -32,6 +41,9 @@ class PersonalDetails(models.Model):
         return self.city
     
 class Package(models.Model):
+
+    """This model is used to store package into table"""
+
     package_names=models.CharField(max_length=50)
     created_at=models.DateTimeField(auto_now_add=True)
     updated_at=models.DateTimeField(auto_now=True)
@@ -39,6 +51,9 @@ class Package(models.Model):
         return self.package_names
 
 class ProjectDetails(models.Model):
+
+    """This model is used to store project details into table"""
+
     registration=models.ForeignKey(Registration,related_name='project_details',on_delete=models.CASCADE)
     booking_date=models.DateField()
     total_value=models.FloatField()
@@ -51,6 +66,9 @@ class ProjectDetails(models.Model):
         return self.project_description
 
 class Team(models.Model):
+
+    """This model is used store team into table"""
+
     team_name=models.CharField(max_length=25)
     project_details=models.ForeignKey(ProjectDetails,related_name='team',on_delete=models.CASCADE)
     project_head=models.CharField(max_length=25)

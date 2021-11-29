@@ -9,6 +9,9 @@ from rest_framework import status
 from django.contrib.auth import authenticate
 from django.contrib.auth import logout
 # Create your views here.
+
+"""This API is used to post data into database"""
+
 class RegistrationView(APIView):
     def post(self,request):
         try:
@@ -22,6 +25,8 @@ class RegistrationView(APIView):
         except Exception as e:
             print(e)
             return Response({'message':'something went wrong'},status=status.HTTP_400_BAD_REQUEST)
+
+""" This API is used to login from registration table """
 
 class LoginView(APIView):
     def post(self,request):
@@ -38,23 +43,24 @@ class LoginView(APIView):
                         if user:
                             return Response({
                                 'message':'login successful'
-                            })
+                            },status=status.HTTP_200_OK)
                         else:
-                            return Response({'message':'Invalid username and password'})
+                            return Response({'message':'Invalid username and password'},status=status.HTTP_406_NOT_ACCEPTABLE)
                     else:
                         return Response({
                             'message':'username and password required'
-                        })
+                        },status=status.HTTP_406_NOT_ACCEPTABLE)
                 else:
-                    return Response({'message':'User not found'})
+                    return Response({'message':'User not found'},status=status.HTTP_404_NOT_FOUND)
             else:
-                return Response({'message':'Invalid data'})
+                return Response(data=serializer.errors,status=status.HTTP_406_NOT_ACCEPTABLE)
         except Exception as e:
             print(e)
             return Response({
                 'message':'Something went wrong'
-            })
+            },status=status.HTTP_400_BAD_REQUEST)
 
+""" This API is used to logout """
 class LogOutView(APIView):
     def post(self,request):
         try:
@@ -62,15 +68,14 @@ class LogOutView(APIView):
         except Exception as e:
             print(e)
 
+""" This API is used to change password """
 
 class ChangePasswordView(APIView):
     def post(self,request):
         try:
             username=request.GET.get('username')
             data=request.data
-            print(data)
             serilizer=ChangePasswordSerializer(data=data)
-            print(serilizer)
             if serilizer.is_valid():
                 print('sandeep')
                 password=serilizer.data['password']
@@ -82,18 +87,22 @@ class ChangePasswordView(APIView):
                     if user:
                         user.set_password(new_password)
                         user.save()
-                        return Response({'message':'Password has been change'})
+                        return Response({'message':'Password has been change'},status=status.HTTP_200_OK)
                     else:
                         return Response({
-                            'message':'password not match'
-                        })
+                            'message':'username not found'
+                        },status=status.HTTP_404_NOT_FOUND)
                 else: 
                     return Response({
                         'message':'Old password and New password same you provide different password'
-                    })
+                    },status=status.HTTP_406_NOT_ACCEPTABLE)
+            else:
+                return Response(data=serilizer.errors,status=status.HTTP_406_NOT_ACCEPTABLE)
         except Exception as e:
             print(e)
-            return Response({'message':'Something went wrong'})
+            return Response({'message':'Something went wrong'},status=status.HTTP_400_BAD_REQUEST)
+
+""" This API is used to post data into database """
 
 class PersonalDetailsView(APIView):
     def post(self,request):
@@ -109,6 +118,8 @@ class PersonalDetailsView(APIView):
             print(e)
             return Response({'message':'something went wrong'},status=status.HTTP_400_BAD_REQUEST)
 
+""" This API is used to get all package from database """
+
 class PackageView(APIView):
     def get(self,request):
         try:
@@ -122,8 +133,26 @@ class PackageView(APIView):
             print(e)
             return Response({'message':'something went wrong'},status=status.HTTP_400_BAD_REQUEST)
 
+""" This API is used to get and post data """
 
 class ProjectDetailsView(APIView):
+
+    def get(self,request):
+        try:
+            username=request.GET.get('username')
+            obj=ProjectDetails.objects.filter(registration__username=username)
+            if obj:
+                if len(obj) > 0:
+                    serializer=ProjectDetailsSerilizer1(obj,many=True)
+                    return Response(data=serializer.data,status=status.HTTP_200_OK)
+                else:
+                    return Response({'message':'data not available'})
+            else:
+                return Response({'message':'username not found'},status=status.HTTP_404_NOT_FOUND)
+        except Exception as e:
+            print(e)
+            return Response({'message':'Something went wrong'},status=status.HTTP_400_BAD_REQUEST)
+    
     def post(self,request):
         try:
             data=request.data
@@ -140,7 +169,7 @@ class ProjectDetailsView(APIView):
             print(e)
             return Response({'message':'something went wrong'},status=status.HTTP_400_BAD_REQUEST)
 
-class TeamSerializerView(APIView):
+class TeamView(APIView):
     def post(self,request):
         try:
             data=request.data
