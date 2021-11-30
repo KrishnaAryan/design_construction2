@@ -13,15 +13,23 @@ class Registration(AbstractUser):
     updated_at=models.DateTimeField(auto_now=True)
     def __str__(self):
         return self.username
+    
+    # def save(self):
+    #     user = super(self,Registration)
+    #     print("sandeep",user)
+    #     user.set_password(self.password)
+    #     user.save()
+    #     return user
 
-@receiver(pre_save, sender=Registration)
-def encript_password(sender,**kwargs):
+# @receiver(pre_save, sender=Registration)
+# def encript_password(sender,**kwargs):
 
-    """This function is used to encript password"""
+#     """This function is used to encript password"""
 
-    obj=kwargs['instance']
-    password=obj.password
-    obj.set_password(password)
+#     obj=kwargs['instance']
+#     password=obj.password
+#     obj.set_password(password)
+    #obj.save()
 
 class PersonalDetails(models.Model):
 

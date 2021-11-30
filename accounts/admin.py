@@ -1,21 +1,38 @@
 from django.contrib import admin
 from django.db.models import fields
 from .models import *
-# from django.contrib.auth.admin import UserAdmin as BaseUserAdmin
+from django.contrib.auth.admin import UserAdmin as BaseUserAdmin
+from .forms import *
 # from django.contrib.auth import get_user_model
 # from django.contrib.auth.admin import UserAdmin
 admin.site.site_header=' '
 admin.site.index_title='Welcome to our site'
 # Register your models here.
-@admin.register(Registration)
-class RegistrationAdmin(admin.ModelAdmin):
-    
-    list_display=['first_name','last_name','email','username','password','mobile_no','created_at','updated_at']
-    fields = ('username','password','first_name','last_name','email','mobile_no','user_permissions','is_staff','is_active','is_superuser')
-    search_fields = ('email_startswith', 'first_name_startswith', 'last_name','mobile_no_startswith')
+# @admin.register(Registration)
+# class RegistrationAdmin(admin.ModelAdmin):
+class RegistrationAdmin(BaseUserAdmin):
+    add_form=customUserCreationForm
+    form=customeUserChangeForms 
+    model=Registration
+    list_display=('username','first_name','last_name','mobile_no','password')
+
+    fieldsets=(
+        # (None,{'fields':('email','mobile_no')}),
+        ('permissions',{'fields':('is_active','is_staff','is_superuser','groups','user_permissions',)}),
+    )
+    add_fieldsets=(
+        (None, {
+            'classes': ('wide',),
+            'fields': ('username', 'password1', 'password2', 'first_name', 'last_name','email','mobile_no')
+            }
+        ),
+    )
+    search_fields = ('email', 'first_name', 'last_name','mobile_no')
+    ordering=('email',)
     list_per_page=10
-    
-    
+admin.site.register(Registration,RegistrationAdmin)
+
+
 @admin.register(PersonalDetails)
 class PersonalDetailsAdmin(admin.ModelAdmin):
     list_display=['registrations','gender','dob','profile_image','local_address','city','state','zip_code','created_at','updated_at']

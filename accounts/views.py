@@ -37,9 +37,11 @@ class LoginView(APIView):
                 username=serializer.data['username']
                 password=serializer.data['password']
                 register=Registration.objects.filter(username=username).first()
+                print(register)
                 if register:
                     if username and password:
                         user=authenticate(username=username,password=password)
+                        print(user)
                         if user:
                             return Response({
                                 'message':'login successful'
