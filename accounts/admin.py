@@ -3,18 +3,20 @@ from django.db.models import fields
 from .models import *
 from django.contrib.auth.admin import UserAdmin as BaseUserAdmin
 from .forms import *
+from django.utils.html import format_html
+
 # from django.contrib.auth import get_user_model
 # from django.contrib.auth.admin import UserAdmin
 admin.site.site_header=' '
 admin.site.index_title='Welcome to our site'
 # Register your models here.
 # @admin.register(Registration)
-# class RegistrationAdmin(admin.ModelAdmin):
+# class RegistrationAdmin(admin.ModelAdmin)
 class RegistrationAdmin(BaseUserAdmin):
     add_form=customUserCreationForm
     form=customeUserChangeForms 
     model=Registration
-    list_display=('username','first_name','last_name','mobile_no','password')
+    list_display=('id','username','mobile_no','password')
 
     fieldsets=(
         # (None,{'fields':('email','mobile_no')}),
@@ -23,11 +25,11 @@ class RegistrationAdmin(BaseUserAdmin):
     add_fieldsets=(
         (None, {
             'classes': ('wide',),
-            'fields': ('username', 'password1', 'password2', 'first_name', 'last_name','email','mobile_no')
+            'fields': ('username', 'password1', 'password2','email','mobile_no')
             }
         ),
     )
-    search_fields = ('email', 'first_name', 'last_name','mobile_no')
+    search_fields = ('email','mobile_no')
     ordering=('email',)
     list_per_page=10
 admin.site.register(Registration,RegistrationAdmin)
@@ -35,32 +37,36 @@ admin.site.register(Registration,RegistrationAdmin)
 
 @admin.register(PersonalDetails)
 class PersonalDetailsAdmin(admin.ModelAdmin):
-    list_display=['registrations','gender','dob','profile_image','local_address','city','state','zip_code','created_at','updated_at']
+    list_display=('id','registrations','gender','dob','profile_image','local_address','city','state','zip_code')
     fields = ('registrations', 'profile_image','gender', 'dob',
     'local_address','city','state','zip_code')
     list_per_page=10
     search_fields = ('state_startswith','city_startswith')
 
-
+    
 @admin.register(Package)
 class PackageAdmin(admin.ModelAdmin):
-    list_display=['package_names','created_at','updated_at']
+    list_display=('id','package_names','package_detail')
     search_fields = ('package_names',)
     list_per_page=10
 
 
 @admin.register(ProjectDetails)
 class ProjectDetailsAdmin(admin.ModelAdmin):
-    list_display=['registration','booking_date','total_value','booking_amount','project_description','package','created_at','updated_at']
+    list_display=('id','registration','booking_date','total_value','booking_amount','project_description','package')
     fields=('registration','booking_date','total_value','booking_amount','project_description','package')
-    search_fields = ('booking_amount_startswith',)
+    search_fields = ('booking_amount',)
     list_per_page=10
 
 
 @admin.register(Team)
 class TeamAdmin(admin.ModelAdmin):
-    list_display=['team_name','project_details','project_head','project_manager','architect','structural_engineer','procurement_manager','project_coordinator','project_engineer','site_engineer','created_at','updated_at']
-    fields=('team_name','project_details','project_head','project_manager','architect','structural_engineer','procurement_manager','project_coordinator','project_engineer','site_engineer')
+    list_display=('id','registration','project_details','name','position','mobile_number','profile_image')
+    list_display_links = ('registration','project_details','name','position','mobile_number','profile_image')
+    fields=('registration','project_details','name','position','mobile_number','profile_pic')
     list_per_page=10
-    search_fields = ('team_name_startswith','project_head_startswith')
+    search_fields = ('name','mobile_number')
+
+    def profile_image(self,obj):
+        return format_html(f'<img src="/media/{obj.profile_pic}" style=height:50px;width:50px>')
 

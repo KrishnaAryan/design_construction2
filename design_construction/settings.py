@@ -91,6 +91,12 @@ DATABASES = {
     }
 }
 
+# from time import gmtime, strftime
+# REST_FRAMEWORK = {
+#     'DATE_INPUT_FORMATS': [strftime("%a, %d %b %Y %H:%M:%S +0000", gmtime())
+# , ],
+#     }
+
 
 # Password validation
 # https://docs.djangoproject.com/en/3.2/ref/settings/#auth-password-validators
@@ -145,3 +151,12 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 
 AUTH_USER_MODEL='accounts.Registration'
+
+
+EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
+EMAIL_HOST = 'smtp.gmail.com'
+EMAIL_HOST_USER = 'karthavyabharatapp@gmail.com'
+EMAIL_HOST_PASSWORD ='qleowxqlboamtqxu'
+EMAIL_PORT = 587
+EMAIL_USE_TLS = True
+DEFAULT_FROM_EMAIL = EMAIL_HOST_USER

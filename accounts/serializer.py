@@ -1,23 +1,32 @@
 
 from django.db.models import fields
+
+from documents.serializer import DocumentsSerializer
 from .models import *
 from rest_framework import serializers
 
 class RegistrationSerializer(serializers.ModelSerializer):
+    email=serializers.EmailField(required=True)
     class Meta:
         model=Registration
-        fields=['first_name','last_name','email','username','password','mobile_no']
+        fields=['email','username','password','mobile_no']
 
     def create(self, validated_data):
         password=validated_data['password']
         obj=Registration.objects.create(
             username=validated_data['username'],
             mobile_no=validated_data['mobile_no'],
+            email=validated_data['email'],
             password=password
         )
         obj.set_password(password)
         obj.save()
         return obj
+
+class RegistrationSerializer1(serializers.ModelSerializer):
+    class Meta:
+        model=Registration
+        fields=['first_name','last_name','email']
 
 class LoginSerializer(serializers.Serializer):
     username=serializers.CharField(required=True)
@@ -35,24 +44,31 @@ class PersonalDetailsSerializer(serializers.ModelSerializer):
 class PackageSerializer(serializers.ModelSerializer):
     class Meta:
         model=Package
-        fields=['package_names','created_at','updated_at']
+        fields=('package_names','package_detail')
 
 class ProjectDetailsSerializer(serializers.ModelSerializer):
     class Meta:
         model=ProjectDetails
-        fields=['registration','booking_date','total_value','booking_amount','project_description','package']
+        fields=['id','registration','booking_date','total_value','booking_amount','project_description','package']
 
 class ProjectDetailsSerilizer1(serializers.ModelSerializer):
     package=PackageSerializer()
     class Meta:
         model=ProjectDetails
-        fields=['registration','booking_date','total_value',
+        fields=['id','booking_date','total_value',
                 'booking_amount','project_description','package']
                 
 class TeamSerializer(serializers.ModelSerializer):
     class Meta:
         model=Team
-        fields=['team_name','project_details','project_head','project_manager','architect','structural_engineer','procurement_manager','project_coordinator','project_engineer','site_engineer']
+        fields=['name','position','mobile_number','profile_pic']
+
+class TeamSerializer1(serializers.ModelSerializer):
+    
+    class Meta:
+        model=Team
+        fields=['id','registration','project_details','name','position','mobile_number','profile_pic']
+
 
 """ ProjectDetails use for geting data in Registration """
 class CustomerRegistrationSerializer1(serializers.ModelSerializer):
@@ -60,3 +76,11 @@ class CustomerRegistrationSerializer1(serializers.ModelSerializer):
     class Meta:
         model=Registration
         fields=['projectdetails']
+
+
+"""All Related data get in a single Project"""
+class SingleProjectSerializer(serializers.ModelSerializer):
+    class Meta:
+        model=ProjectDetails
+        fields=['id','booking_date','total_value','booking_amount','project_description','package','created_at','team',
+      'registration','documents']
