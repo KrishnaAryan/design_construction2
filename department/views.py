@@ -40,7 +40,7 @@ class ProjectCoordinationView(APIView):
         try:
             id=request.GET.get('id')
             if id is not None:
-                obj=ProjectCoordination.objects.filter(id=id).first()
+                obj=ProjectCoordination.objects.filter(emp_id=id).first()
                 if obj is not None:
                     serializer=ProjectCoordinationSerializer(obj)
                     return Response(data=serializer.data,status=status.HTTP_200_OK)
@@ -70,7 +70,7 @@ class DesignTeamView(APIView):
             try:
                 id=request.GET.get('id')
                 if id is not None:
-                    obj=DesignTeam.objects.filter(id=id).first()
+                    obj=DesignTeam.objects.filter(emp_id=id).first()
                     if obj is not None:
                         serializer=DesignTeamSerializer(obj)
                         return Response(data=serializer.data,status=status.HTTP_200_OK)
@@ -99,7 +99,7 @@ class ExecutionTeamView(APIView):
             try:
                 id=request.GET.get('id')
                 if id is not None:
-                    obj=ExecutionTeam.objects.filter(id=id).first()
+                    obj=ExecutionTeam.objects.filter(emp_id=id).first()
                     if obj is not None:
                         serializer=ExecutionTeamSerializer(obj)
                         return Response(data=serializer.data,status=status.HTTP_200_OK)
