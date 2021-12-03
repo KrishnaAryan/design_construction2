@@ -266,10 +266,10 @@ class TeamView(APIView):
             user=request.GET.get('username')
             project_id=request.GET.get('project_id')
             if user:
-                obj=Team.objects.filter(registration__username=user).first()
+                obj=Team.objects.filter(registration__username=user)
                 print(obj)
                 if len(obj) >0:
-                    serializer=TeamSerializer(obj)
+                    serializer=TeamSerializer(obj,many=True)
                     return Response(data=serializer.data,status=status.HTTP_200_OK)
                 else:
                     return Response({'message':'Team is not there'},status=status.HTTP_404_NOT_FOUND)
