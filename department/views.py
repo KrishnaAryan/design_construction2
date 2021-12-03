@@ -10,8 +10,9 @@ class FinanceView(APIView):
         try:
             id=request.GET.get('id')
             if id is not None:
-                obj=Finance.objects.filter(id=id).first()
+                obj=Finance.objects.filter(emp_id=id).first()
                 if obj is not None:
+                    print(obj)
                     serializer=FinanceSerializer(obj)
                     return Response(data=serializer.data,status=status.HTTP_200_OK)
                 else:
