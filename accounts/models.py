@@ -119,7 +119,7 @@ class ProjectDetails(models.Model):
     updated_at=models.DateTimeField(auto_now=True)
 
     def __str__(self):
-        return self.project_description
+        return str(self.id)
     def totalValue(self):
         total_value=self.objects.aggregate(Sum('total_value'))
         return total_value
