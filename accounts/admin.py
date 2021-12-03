@@ -37,11 +37,14 @@ admin.site.register(Registration,RegistrationAdmin)
 
 @admin.register(PersonalDetails)
 class PersonalDetailsAdmin(admin.ModelAdmin):
-    list_display=('id','registrations','gender','dob','profile_image','local_address','city','state','zip_code')
-    fields = ('registrations', 'profile_image','gender', 'dob',
+    list_display=('id','registrations','gender','dob','profile_image_customer','local_address','city','state','zip_code')
+    fields = ('registrations','full_name','profile_image','gender', 'dob',
     'local_address','city','state','zip_code')
     list_per_page=10
-    search_fields = ('state_startswith','city_startswith')
+    search_fields = ('state','city')
+
+    def profile_image_customer(self,obj):
+        return format_html(f'<img src="/media/{obj.profile_image}" style=height:50px;width:50px>')
 
     
 @admin.register(Package)
