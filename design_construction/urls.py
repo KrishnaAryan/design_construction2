@@ -27,6 +27,7 @@ urlpatterns = [
     path('department/',include('department.urls')),
     path('documents/',include('documents.urls')),
     path('insight/',include('insight.urls')),
+    path('payment_tracker/',include('payment_tracker.urls')),
     url(r'^media/(?P<path>.*)$',serve,{'document_root':settings.MEDIA_ROOT}),
     url(r'^static/(?P<path>.*)$',serve,{'document_root':settings.STATIC_ROOT}),
 
