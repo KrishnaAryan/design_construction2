@@ -220,3 +220,16 @@ class ThreeDSerializerView(APIView):
     #         print(e)
     #         return Response({'message':'something went wrong'},status=status.HTTP_400_BAD_REQUEST)
 
+class GalleryImageView(APIView):
+    def get(self,request):
+        try:
+            user=request.GET.get('username')
+            obj=GalleryImage.objects.filter(user_name__username=user).first()
+            if obj:
+                serializer=GalleryImageSerializer(obj)
+                return Response(data=serializer.data,status=status.HTTP_200_OK)
+            else:
+                return Response({'message':'Username not found'},status=status.HTTP_404_NOT_FOUND)
+        except Exception as e:
+            print(e)
+            return Response({'message':'Something went wrong'},status=status.HTTP_400_BAD_REQUEST)

@@ -119,3 +119,19 @@ class ThreeDAdmin(admin.ModelAdmin):
 
     def three_d_image_three_d_elevation(self,obj):
         return format_html(f'<img src="/media/{obj.three_d_elevation}" style=height:50px;width:50px>')
+
+
+@admin.register(GalleryImage)
+class GalleryImageAdmin(admin.ModelAdmin):
+    list_display=('id','inside_image','outside_image','two_d_image_image','three_d_image_image')
+    list_per_page=10
+    search_fields = ('id',)
+
+    def inside_image(self,obj):
+        return format_html(f'<img src="/media/{obj.inside}" style=height:50px;width:50px>')
+    def outside_image(self,obj):
+        return format_html(f'<img src="/media/{obj.outside}" style=height:50px;width:50px>')
+    def two_d_image_image(self,obj):
+        return format_html(f'<img src="/media/{obj.two_d_image}" style=height:50px;width:50px>')
+    def three_d_image_image(self,obj):
+        return format_html(f'<img src="/media/{obj.three_d_image}" style=height:50px;width:50px>')

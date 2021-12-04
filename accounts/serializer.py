@@ -39,24 +39,30 @@ class ChangePasswordSerializer(serializers.Serializer):
 class PersonalDetailsSerializer(serializers.ModelSerializer):
     class Meta:
         model=PersonalDetails
-        fields=['registrations','gender','dob','profile_image','local_address','city','state','zip_code']
+        fields=['full_name','gender','dob','profile_image','local_address','city','state','zip_code']
 
 class PackageSerializer(serializers.ModelSerializer):
     class Meta:
         model=Package
         fields=('package_names','package_detail')
 
+class DepartmentSerializer(serializers.ModelSerializer):
+    class Meta:
+        model=Department
+        fields=('department_name',)
+
 class ProjectDetailsSerializer(serializers.ModelSerializer):
     class Meta:
         model=ProjectDetails
-        fields=['id','registration','booking_date','total_value','booking_amount','project_description','package']
+        fields=['id','registration','department','booking_date','total_value','booking_amount','project_description','package']
 
 class ProjectDetailsSerilizer1(serializers.ModelSerializer):
     package=PackageSerializer()
+    department=DepartmentSerializer()
     class Meta:
         model=ProjectDetails
         fields=['id','booking_date','total_value',
-                'booking_amount','project_description','package']
+                'booking_amount','project_description','department','package']
                 
 class TeamSerializer(serializers.ModelSerializer):
     class Meta:

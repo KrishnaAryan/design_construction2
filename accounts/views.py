@@ -148,9 +148,11 @@ class ChangePasswordView(APIView):
 class PersonalDetailsView(APIView):
     def get(self,request):
         try:
-            data=request.data
+            data=request.GET.get('username')
             if data is not None:
-                obj=PersonalDetails.objects.filter(registrations__id=int(data['id'])).first()
+                print(data)
+                obj=PersonalDetails.objects.filter(registrations__username=data).first()
+                print(obj)
                 if obj is not None:
                     serializer=PersonalDetailsSerializer(obj)
                     return Response({'message':serializer.data},status=status.HTTP_200_OK)
@@ -266,10 +268,10 @@ class TeamView(APIView):
             user=request.GET.get('username')
             project_id=request.GET.get('project_id')
             if user:
-                obj=Team.objects.filter(registration__username=user)
+                obj=Team.objects.filter(registration__username=user).first()
                 print(obj)
-                if len(obj) >0:
-                    serializer=TeamSerializer(obj,many=True)
+                if obj:
+                    serializer=TeamSerializer(obj)
                     return Response(data=serializer.data,status=status.HTTP_200_OK)
                 else:
                     return Response({'message':'Team is not there'},status=status.HTTP_404_NOT_FOUND)

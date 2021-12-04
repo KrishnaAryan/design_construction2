@@ -5,12 +5,12 @@ from rest_framework import serializers
 
 class FinanceSerializer(serializers.ModelSerializer):
     class Meta:
-        model=Finance
+        model:Finance
         fields=['emp_name','emp_id','designation','project_details']
 
 class ProjectCoordinationSerializer(serializers.ModelSerializer):
     class Meta:
-        model=ProjectCoordination
+        model:ProjectCoordination
         fields=['emp_name','emp_id','designation','project_details']
 
 class DesignTeamSerializer(serializers.ModelSerializer):

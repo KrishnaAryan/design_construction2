@@ -4,16 +4,16 @@ from accounts.models import *
 # Create your models here.
 def agreement_generate_id():
     try:
-        obj=Agreements.objects.last()
-        if obj is not None:
-            return (obj.id)+1
+        id=Agreements.objects.count()
+        if id is not None:
+            return f"DCB{1001+id}"
         else:
-            return 1001
+            return f"DCB{1001}"
     except Exception as e:
         print(e)
 
 class Agreements(models.Model):
-    id=models.IntegerField(default=agreement_generate_id,primary_key=True,editable=False)
+    id=models.CharField(max_length=10, default=personal_generate_id,primary_key=True,editable=False)
     booking_agreements=models.ImageField(upload_to='image/')
     main_agreements=models.ImageField(upload_to='image/')
     project_details=models.ForeignKey(ProjectDetails,related_name='agreements',on_delete=models.CASCADE)
@@ -22,16 +22,16 @@ class Agreements(models.Model):
 
 def document_generate_id():
     try:
-        obj=Documents.objects.last()
-        if obj is not None:
-            return (obj.id)+1
+        id=Documents.objects.count()
+        if id is not None:
+            return f"DCB{1001+id}"
         else:
-            return 1001
+            return f"DCB{1001}"
     except Exception as e:
         print(e)
 
 class Documents(models.Model):
-    id=models.IntegerField(default=document_generate_id,primary_key=True,editable=False)
+    id=models.CharField(max_length=10, default=personal_generate_id,primary_key=True,editable=False)
     boq=models.ImageField(upload_to='image/')
     payments=models.ImageField(upload_to='image/')
     projects_schedule=models.ImageField(upload_to='image/')
@@ -43,33 +43,33 @@ class Documents(models.Model):
 
 def concept_plan_generate_id():
     try:
-        obj=ConceptPlans.objects.last()
-        if obj is not None:
-            return (obj.id)+1
+        id=ConceptPlans.objects.count()
+        if id is not None:
+            return f"DCB{1001+id}"
         else:
-            return 1001
+            return f"DCB{1001}"
     except Exception as e:
         print(e)
 
 class ConceptPlans(models.Model):
-    id=models.IntegerField(default=concept_plan_generate_id,primary_key=True,editable=False)
+    id=models.CharField(max_length=10, default=personal_generate_id,primary_key=True,editable=False)
     concept_plans=models.ImageField(upload_to='image/')
     project_details=models.ForeignKey(ProjectDetails,related_name='concept_plans',on_delete=models.CASCADE)
     created_at=models.DateTimeField(auto_now_add=True)
     updated_at=models.DateTimeField(auto_now=True)
-
 def working_drawings_generate_id():
     try:
-        obj=WorkingDrawings.objects.last()
-        if obj is not None:
-            return (obj.id)+1
+        id=WorkingDrawings.objects.count()
+        if id is not None:
+            return f"DCB{1001+id}"
         else:
-            return 1001
+            return f"DCB{1001}"
     except Exception as e:
         print(e)
 
+
 class WorkingDrawings(models.Model):
-    id=models.IntegerField(default=working_drawings_generate_id,primary_key=True,editable=False)
+    id=models.CharField(max_length=10, default=personal_generate_id,primary_key=True,editable=False)
     open_schedule=models.ImageField(upload_to='image/')
     joinery_details=models.ImageField(upload_to='image/')
     plumbing_details=models.ImageField(upload_to='image/')
@@ -84,16 +84,16 @@ class WorkingDrawings(models.Model):
 
 def structural_drawing_generate_id():
     try:
-        obj=StructuralDrawings.objects.last()
-        if obj is not None:
-            return (obj.id)+1
+        id=StructuralDrawings.objects.count()
+        if id is not None:
+            return f"DCB{1001+id}"
         else:
-            return 1001
+            return f"DCB{1001}"
     except Exception as e:
         print(e)
 
 class StructuralDrawings(models.Model):
-    id=models.IntegerField(default=structural_drawing_generate_id,primary_key=True,editable=False)
+    id=models.CharField(max_length=10, default=personal_generate_id,primary_key=True,editable=False)
     center_line_plan=models.ImageField(upload_to='image/')
     footing_layout=models.ImageField(upload_to='image/')
     column_details=models.ImageField(upload_to='image/')
@@ -108,18 +108,36 @@ class StructuralDrawings(models.Model):
     
 def three_generate_id():
     try:
-        obj=ThreeD.objects.last()
-        if obj is not None:
-            return (obj.id)+1
+        id=ThreeD.objects.count()
+        if id is not None:
+            return f"DCB{1001+id}"
         else:
-            return 1001
+            return f"DCB{1001}"
     except Exception as e:
         print(e)
 
 class ThreeD(models.Model):
-    id=models.IntegerField(default=three_generate_id,primary_key=True,editable=False)
+    id=models.CharField(max_length=10, default=personal_generate_id,primary_key=True,editable=False)
     three_d_elevation=models.ImageField(upload_to='image/')
     project_details=models.ForeignKey(ProjectDetails,related_name='three_d',on_delete=models.CASCADE)
     created_at=models.DateTimeField(auto_now_add=True)
     updated_at=models.DateTimeField(auto_now=True)
     
+
+
+def gallery_generate_id():
+    try:
+        id=GalleryImage.objects.count()
+        if id is not None:
+            return f"DCB{1001+id}"
+        else:
+            return f"DCB{1001}"
+    except Exception as e:
+        print(e)
+class GalleryImage(models.Model):
+    user_name=models.ForeignKey(Registration,related_name='user_name',on_delete=models.CASCADE)
+    id=models.CharField(max_length=10, default=personal_generate_id,primary_key=True,editable=False)
+    inside=models.ImageField(upload_to='inside/')
+    outside=models.ImageField(upload_to='outside/')
+    two_d_image=models.ImageField(upload_to='two_d/')
+    three_d_image=models.ImageField(upload_to='three_d/')

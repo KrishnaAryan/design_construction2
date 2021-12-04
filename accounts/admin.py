@@ -37,7 +37,7 @@ admin.site.register(Registration,RegistrationAdmin)
 
 @admin.register(PersonalDetails)
 class PersonalDetailsAdmin(admin.ModelAdmin):
-    list_display=('id','registrations','gender','dob','profile_image_customer','local_address','city','state','zip_code')
+    list_display=('id','registrations','full_name','gender','dob','profile_image_customer','local_address','city','state','zip_code')
     fields = ('registrations','full_name','profile_image','gender', 'dob',
     'local_address','city','state','zip_code')
     list_per_page=10
@@ -54,10 +54,17 @@ class PackageAdmin(admin.ModelAdmin):
     list_per_page=10
 
 
+@admin.register(Department)
+class DepartmentAdmin(admin.ModelAdmin):
+    list_display=('id','department_name')
+    search_fields=('department_name',)
+    list_per_page=10
+
+
 @admin.register(ProjectDetails)
 class ProjectDetailsAdmin(admin.ModelAdmin):
-    list_display=('id','registration','booking_date','total_value','booking_amount','project_description','package')
-    fields=('registration','booking_date','total_value','booking_amount','project_description','package')
+    list_display=('id','registration','department','booking_date','total_value','booking_amount','project_description','package')
+    fields=('registration','department','booking_date','total_value','booking_amount','project_description','package')
     search_fields = ('booking_amount',)
     list_per_page=10
 

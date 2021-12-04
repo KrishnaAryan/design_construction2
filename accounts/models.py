@@ -6,11 +6,11 @@ from django.db.models import Sum
 # Create your models here.
 def customer_generate_id():
     try:
-        obj=Registration.objects.last()
-        if obj is not None:
-            return (obj.id)+1
+        id=Registration.objects.count()
+        if id is not None:
+            return f"DCB{1001+id}"
         else:
-            return 1001
+            return f"DCB{1001}"
     except Exception as e:
         print(e)
 
@@ -19,7 +19,7 @@ class Registration(AbstractUser):
     """It is store data into registration table"""
     first_name=None
     last_name=None
-    id=models.IntegerField(default=customer_generate_id,primary_key=True,editable=False)
+    id=models.CharField(max_length=10, default=customer_generate_id,primary_key=True,editable=False)
     mobile_no=models.CharField(max_length=13)
     #email=models.EmailField(unique=True)
     otp=models.IntegerField(default=0)
@@ -46,11 +46,11 @@ class Registration(AbstractUser):
     #obj.save()
 def personal_generate_id():
     try:
-        obj=PersonalDetails.objects.last()
-        if obj is not None:
-            return (obj.id)+1
+        id=PersonalDetails.objects.count()
+        if id is not None:
+            return f"DCB{1001+id}"
         else:
-            return 1001
+            return f"DCB{1001}"
     except Exception as e:
         print(e)
 
@@ -59,7 +59,7 @@ class PersonalDetails(models.Model):
     """This model is used to stores personal details into table"""
 
     registrations=models.ForeignKey(Registration,related_name='personal_details',on_delete=models.CASCADE)
-    id=models.IntegerField(default=personal_generate_id,primary_key=True,editable=False)
+    id=models.CharField(max_length=10, default=personal_generate_id,primary_key=True,editable=False)
     full_name=models.CharField(max_length=100,null=True,blank=True)
     gender=models.CharField(max_length=10,choices=(('Male','Male'),('Female','Female')))
     dob=models.DateField()
@@ -75,18 +75,18 @@ class PersonalDetails(models.Model):
     
 def package_generate_id():
     try:
-        obj=Package.objects.last()
-        if obj is not None:
-            return (obj.id)+1
+        id=Package.objects.count()
+        if id is not None:
+            return f"DCB{1001+id}"
         else:
-            return 1001
+            return f"DCB{1001}"
     except Exception as e:
         print(e)
 
 class Package(models.Model):
 
     """This model is used to store package into table"""
-    id=models.IntegerField(default=package_generate_id,primary_key=True,editable=False)
+    id=models.CharField(max_length=10,default=package_generate_id,primary_key=True,editable=False)
     package_names=models.CharField(max_length=50)
     package_detail=models.TextField(null=True,blank=True)
     created_at=models.DateTimeField(auto_now_add=True)
@@ -94,13 +94,30 @@ class Package(models.Model):
     def __str__(self):
         return self.package_names
 
+def department_generate_id():
+    try:
+        id=Department.objects.count()
+        if id is not None:
+            return f"DCB{1001+id}"
+        else:
+            return f"DCB{1001}"
+    except Exception as e:
+        print(e)
+
+class Department(models.Model):
+    id=models.CharField(max_length=10,default=department_generate_id,primary_key=True,editable=False)
+    department_name=models.CharField(max_length=100,)
+
+    def __str__(self):
+        return self.department_name
+
 def projectDetails_generate_id():
     try:
-        obj=ProjectDetails.objects.last()
-        if obj is not None:
-            return (obj.id)+1
+        id=ProjectDetails.objects.count()
+        if id is not None:
+            return f"DCB{1001+id}"
         else:
-            return 1001
+            return f"DCB{1001}"
     except Exception as e:
         print(e)
 
@@ -109,7 +126,8 @@ class ProjectDetails(models.Model):
     """This model is used to store project details into table"""
 
     registration=models.ForeignKey(Registration,related_name='project_details',on_delete=models.CASCADE)
-    id=models.IntegerField(default=projectDetails_generate_id,primary_key=True,editable=False)
+    department=models.ForeignKey(Department,related_name='department',on_delete=models.CASCADE)
+    id=models.CharField(max_length=10, default=projectDetails_generate_id,primary_key=True,editable=False)
     booking_date=models.DateField()
     total_value=models.FloatField()
     booking_amount=models.FloatField()
@@ -127,13 +145,16 @@ class ProjectDetails(models.Model):
         total_amount=self.objects.aggregate(Sum('booking_amount'))
         return total_amount
 
+
+
+
 def team_generate_id():
     try:
-        obj=Team.objects.last()
-        if obj is not None:
-            return (obj.id)+1
+        id=Team.objects.count()
+        if id is not None:
+            return f"DCB{1001+id}"
         else:
-            return 1001
+            return f"DCB{1001}"
     except Exception as e:
         print(e)
 
@@ -143,7 +164,7 @@ class Team(models.Model):
 
     registration=models.ForeignKey(Registration,related_name='register',on_delete=models.CASCADE,null=True,blank=True)
     project_details=models.ForeignKey(ProjectDetails,related_name='team',on_delete=models.CASCADE)
-    id=models.IntegerField(default=team_generate_id,primary_key=True,editable=False)
+    id=models.CharField(max_length=10, default=team_generate_id,primary_key=True,editable=False)
     name=models.CharField(max_length=25)
     position=models.CharField(max_length=100,null=True,blank=True)
     mobile_number=models.CharField(max_length=100,null=True,blank=True)
