@@ -113,16 +113,16 @@ class StructuralDrawingsAdmin(admin.ModelAdmin):
         return format_html(f'<img src="/media/{obj.staircase_details}" style=height:50px;width:50px>')
 
     
-@admin.register(ThreeDModel)
-class ThreeDModelAdmin(admin.ModelAdmin):
-    list_display=('id','three_d_image_three_d_elevation','project_details')
-    fields = ('three_d_elevation','project_details')
+# @admin.register(ThreeDModel)
+# class ThreeDModelAdmin(admin.ModelAdmin):
+#     list_display=('id','three_d_image_three_d_elevation','project_details')
+#     fields = ('three_d_elevation','project_details')
 
-    list_per_page=10
-    search_fields = ('id',)
+#     list_per_page=10
+#     search_fields = ('id',)
 
-    def three_d_image_three_d_elevation(self,obj):
-        return format_html(f'<img src="/media/{obj.three_d_elevation}" style=height:50px;width:50px>')
+#     def three_d_image_three_d_elevation(self,obj):
+#         return format_html(f'<img src="/media/{obj.three_d_elevation}" style=height:50px;width:50px>')
 
 
 class InsideStackAdmin(admin.StackedInline):
