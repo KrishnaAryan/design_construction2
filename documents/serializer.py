@@ -33,7 +33,30 @@ class ThreeDSerializer(serializers.ModelSerializer):
         model=ThreeD
         fields=('three_d_elevation',)
 
+class InsideSerializer(serializers.ModelSerializer):
+    class Meta:
+        model=InsideImage
+        fields=('inside',)
+class OutsideSerializer(serializers.ModelSerializer):
+    class Meta:
+        model=OutsideImage
+        fields=('outside',)
+
+class ThreeD1Serializer(serializers.ModelSerializer):
+    class Meta:
+        model=ThreeD
+        fields=('three_d',)
+class TwoDSerializer(serializers.ModelSerializer):
+    class Meta:
+        model=TwoD
+        fields=('two_d',)
+
 class GalleryImageSerializer(serializers.ModelSerializer):
+    inside=InsideSerializer(read_only=True,many=True)
+    outside=OutsideSerializer(read_only=True,many=True)
+    inside=InsideSerializer(read_only=True,many=True)
+    two_d=TwoDSerializer(read_only=True,many=True)
+    three_d=ThreeD1Serializer(read_only=True,many=True)
     class Meta:
         model=GalleryImage
-        fields=('id','inside','outside','two_d_image','three_d_image')
+        fields=('id','inside','outside','two_d','three_d')

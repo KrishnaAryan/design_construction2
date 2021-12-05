@@ -56,8 +56,8 @@ class PackageAdmin(admin.ModelAdmin):
 
 @admin.register(Department)
 class DepartmentAdmin(admin.ModelAdmin):
-    list_display=('id','department_name')
-    search_fields=('department_name',)
+    list_display=('id','name','department_name')
+    search_fields=('department_name','name')
     list_per_page=10
 
 

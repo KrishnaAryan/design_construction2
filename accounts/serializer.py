@@ -41,6 +41,13 @@ class PersonalDetailsSerializer(serializers.ModelSerializer):
         model=PersonalDetails
         fields=['full_name','gender','dob','profile_image','local_address','city','state','zip_code']
 
+class PersonalDetailsSerializer1(serializers.ModelSerializer):
+    registrations=RegistrationSerializer()
+    class Meta:
+        model=PersonalDetails
+        fields=['registrations','full_name','gender','dob','profile_image','local_address','city','state','zip_code']
+
+
 class PackageSerializer(serializers.ModelSerializer):
     class Meta:
         model=Package

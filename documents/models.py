@@ -5,6 +5,7 @@ from accounts.models import *
 def agreement_generate_id():
     try:
         id=Agreements.objects.count()
+        print(id)
         if id is not None:
             return f"DCB{1001+id}"
         else:
@@ -13,12 +14,15 @@ def agreement_generate_id():
         print(e)
 
 class Agreements(models.Model):
-    id=models.CharField(max_length=10, default=personal_generate_id,primary_key=True,editable=False)
+    id=models.CharField(max_length=10, default=agreement_generate_id,primary_key=True,editable=False)
     booking_agreements=models.ImageField(upload_to='image/')
     main_agreements=models.ImageField(upload_to='image/')
     project_details=models.ForeignKey(ProjectDetails,related_name='agreements',on_delete=models.CASCADE)
     created_at=models.DateTimeField(auto_now_add=True)
     updated_at=models.DateTimeField(auto_now=True)
+
+    def __str__(self):
+        return self.id
 
 def document_generate_id():
     try:
@@ -31,7 +35,7 @@ def document_generate_id():
         print(e)
 
 class Documents(models.Model):
-    id=models.CharField(max_length=10, default=personal_generate_id,primary_key=True,editable=False)
+    id=models.CharField(max_length=10, default=document_generate_id,primary_key=True,editable=False)
     boq=models.ImageField(upload_to='image/')
     payments=models.ImageField(upload_to='image/')
     projects_schedule=models.ImageField(upload_to='image/')
@@ -52,7 +56,7 @@ def concept_plan_generate_id():
         print(e)
 
 class ConceptPlans(models.Model):
-    id=models.CharField(max_length=10, default=personal_generate_id,primary_key=True,editable=False)
+    id=models.CharField(max_length=10, default=concept_plan_generate_id,primary_key=True,editable=False)
     concept_plans=models.ImageField(upload_to='image/')
     project_details=models.ForeignKey(ProjectDetails,related_name='concept_plans',on_delete=models.CASCADE)
     created_at=models.DateTimeField(auto_now_add=True)
@@ -69,7 +73,7 @@ def working_drawings_generate_id():
 
 
 class WorkingDrawings(models.Model):
-    id=models.CharField(max_length=10, default=personal_generate_id,primary_key=True,editable=False)
+    id=models.CharField(max_length=10, default=working_drawings_generate_id,primary_key=True,editable=False)
     open_schedule=models.ImageField(upload_to='image/')
     joinery_details=models.ImageField(upload_to='image/')
     plumbing_details=models.ImageField(upload_to='image/')
@@ -93,7 +97,7 @@ def structural_drawing_generate_id():
         print(e)
 
 class StructuralDrawings(models.Model):
-    id=models.CharField(max_length=10, default=personal_generate_id,primary_key=True,editable=False)
+    id=models.CharField(max_length=10, default=structural_drawing_generate_id,primary_key=True,editable=False)
     center_line_plan=models.ImageField(upload_to='image/')
     footing_layout=models.ImageField(upload_to='image/')
     column_details=models.ImageField(upload_to='image/')
@@ -116,8 +120,8 @@ def three_generate_id():
     except Exception as e:
         print(e)
 
-class ThreeD(models.Model):
-    id=models.CharField(max_length=10, default=personal_generate_id,primary_key=True,editable=False)
+class ThreeDModel(models.Model):
+    id=models.CharField(max_length=10, default=three_generate_id,primary_key=True,editable=False)
     three_d_elevation=models.ImageField(upload_to='image/')
     project_details=models.ForeignKey(ProjectDetails,related_name='three_d',on_delete=models.CASCADE)
     created_at=models.DateTimeField(auto_now_add=True)
@@ -136,8 +140,29 @@ def gallery_generate_id():
         print(e)
 class GalleryImage(models.Model):
     user_name=models.ForeignKey(Registration,related_name='user_name',on_delete=models.CASCADE)
-    id=models.CharField(max_length=10, default=personal_generate_id,primary_key=True,editable=False)
+    project_details=models.ForeignKey(ProjectDetails,related_name='gallery',on_delete=models.CASCADE)
+    id=models.CharField(max_length=10, default=gallery_generate_id,primary_key=True,editable=False)
+    # inside=models.ImageField(upload_to='inside/')
+    # outside=models.Im(upload_to='outside/')
+    # two_d_image=models.ImageField(upload_to='two_d/')
+    # three_d_image=models.ImageField(upload_to='three_d/')
+
+
+
+class InsideImage(models.Model):
+    gallery_image=models.ForeignKey(GalleryImage,related_name='inside',on_delete=models.CASCADE)
     inside=models.ImageField(upload_to='inside/')
+
+class OutsideImage(models.Model):
+    gallery_image=models.ForeignKey(GalleryImage,related_name='outside',on_delete=models.CASCADE)
     outside=models.ImageField(upload_to='outside/')
-    two_d_image=models.ImageField(upload_to='two_d/')
-    three_d_image=models.ImageField(upload_to='three_d/')
+
+class TwoD(models.Model):
+    gallery_image=models.ForeignKey(GalleryImage,related_name='two_d',on_delete=models.CASCADE)
+    two_d=models.ImageField(upload_to='two_d/')
+
+class ThreeD(models.Model):
+    gallery_image=models.ForeignKey(GalleryImage,related_name='three_d',on_delete=models.CASCADE)
+    three_d=models.ImageField(upload_to='three_d/')
+
+

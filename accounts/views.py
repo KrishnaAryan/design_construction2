@@ -151,10 +151,10 @@ class PersonalDetailsView(APIView):
             data=request.GET.get('username')
             if data is not None:
                 print(data)
-                obj=PersonalDetails.objects.filter(registrations__username=data).first()
+                obj=PersonalDetails.objects.filter(registrations__username=data)
                 print(obj)
-                if obj is not None:
-                    serializer=PersonalDetailsSerializer(obj)
+                if len(obj)>0:
+                    serializer=PersonalDetailsSerializer1(obj,many=True)
                     return Response({'message':serializer.data},status=status.HTTP_200_OK)
                 return Response({'message':'Id is not Valid'},status=status.HTTP_404_NOT_FOUND)
             return Response({'message':'Please send id'},status=status.HTTP_400_BAD_REQUEST)
@@ -268,10 +268,10 @@ class TeamView(APIView):
             user=request.GET.get('username')
             project_id=request.GET.get('project_id')
             if user:
-                obj=Team.objects.filter(registration__username=user).first()
+                obj=Team.objects.filter(registration__username=user)
                 print(obj)
-                if obj:
-                    serializer=TeamSerializer(obj)
+                if len(obj) >0:
+                    serializer=TeamSerializer(obj,many=True)
                     return Response(data=serializer.data,status=status.HTTP_200_OK)
                 else:
                     return Response({'message':'Team is not there'},status=status.HTTP_404_NOT_FOUND)

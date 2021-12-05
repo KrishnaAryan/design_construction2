@@ -7,7 +7,7 @@ urlpatterns = [
     path('concept_plans/',ConceptPlansView.as_view() ),
     path('working_drawings/',WorkingDrawingsView.as_view() ),
     path('structural_rawings/',StructuralDrawingsView.as_view() ),
-    path('threeD_serializer/',ThreeDSerializerView.as_view() ),
+    path('three_d/',ThreeDView.as_view() ),
     path('gallery_image/',GalleryImageView.as_view())
     
 ]

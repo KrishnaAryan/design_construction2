@@ -14,9 +14,9 @@ class AgreementsView(APIView):
                     project=ProjectDetails.objects.filter(registration__username=username).first()
                     print(project)
                     if project is not None:
-                        obj=Agreements.objects.filter(project_details__id=project.id).first()
-                        if obj is not None:
-                            serializer=AgreementsSerializer(obj)
+                        obj=Agreements.objects.filter(project_details__id=project.id)
+                        if len(obj)>0:
+                            serializer=AgreementsSerializer(obj,many=True)
                             return Response(data=serializer.data,status=status.HTTP_200_OK)
                         else:
                             return Response({'message':'Id not found'},status=status.HTTP_404_NOT_FOUND)
@@ -49,9 +49,9 @@ class DocumentsView(APIView):
                     project=ProjectDetails.objects.filter(registration__username=username).first()
                     print(project)
                     if project is not None:
-                        obj=Documents.objects.filter(project_details__id=project.id).first()
-                        if obj is not None:
-                            serializer=DocumentsSerializer(obj)
+                        obj=Documents.objects.filter(project_details__id=project.id)
+                        if len(obj)>0:
+                            serializer=DocumentsSerializer(obj,many=True)
                             return Response(data=serializer.data,status=status.HTTP_200_OK)
                         else:
                             return Response({'message':'Id not found'},status=status.HTTP_404_NOT_FOUND)
@@ -84,9 +84,9 @@ class ConceptPlansView(APIView):
                     project=ProjectDetails.objects.filter(registration__username=username).first()
                     print(project)
                     if project is not None:
-                        obj=ConceptPlans.objects.filter(project_details__id=project.id).first()
-                        if obj is not None:
-                            serializer=ConceptPlansSerializer(obj)
+                        obj=ConceptPlans.objects.filter(project_details__id=project.id)
+                        if len(obj)>0:
+                            serializer=ConceptPlansSerializer(obj,many=True)
                             return Response(data=serializer.data,status=status.HTTP_200_OK)
                         else:
                             return Response({'message':'Id not found'},status=status.HTTP_404_NOT_FOUND)
@@ -120,9 +120,9 @@ class WorkingDrawingsView(APIView):
                     project=ProjectDetails.objects.filter(registration__username=username).first()
                     print(project)
                     if project is not None:
-                        obj=WorkingDrawings.objects.filter(project_details__id=project.id).first()
-                        if obj is not None:
-                            serializer=WorkingDrawingsSerializer(obj)
+                        obj=WorkingDrawings.objects.filter(project_details__id=project.id)
+                        if len(obj)>0:
+                            serializer=WorkingDrawingsSerializer(obj,many=True)
                             return Response(data=serializer.data,status=status.HTTP_200_OK)
                         else:
                             return Response({'message':'Id not found'},status=status.HTTP_404_NOT_FOUND)
@@ -157,9 +157,9 @@ class StructuralDrawingsView(APIView):
                     project=ProjectDetails.objects.filter(registration__username=username).first()
                     print(project)
                     if project is not None:
-                        obj=StructuralDrawings.objects.filter(project_details__id=project.id).first()
-                        if obj is not None:
-                            serializer=StructuralDrawingsSerializer(obj)
+                        obj=StructuralDrawings.objects.filter(project_details__id=project.id)
+                        if len(obj)>0:
+                            serializer=StructuralDrawingsSerializer(obj,many=True)
                             return Response(data=serializer.data,status=status.HTTP_200_OK)
                         else:
                             return Response({'message':'Id not found'},status=status.HTTP_404_NOT_FOUND)
@@ -184,7 +184,7 @@ class StructuralDrawingsView(APIView):
     #         print(e)
     #         return Response({'message':'something went wrong'},status=status.HTTP_400_BAD_REQUEST)
 
-class ThreeDSerializerView(APIView):
+class ThreeDView(APIView):
     def get(self,request):
             try:
                 username=request.GET.get('username')
@@ -224,9 +224,9 @@ class GalleryImageView(APIView):
     def get(self,request):
         try:
             user=request.GET.get('username')
-            obj=GalleryImage.objects.filter(user_name__username=user).first()
-            if obj:
-                serializer=GalleryImageSerializer(obj)
+            obj=GalleryImage.objects.filter(user_name__username=user)
+            if len(obj)>0:
+                serializer=GalleryImageSerializer(obj,many=True)
                 return Response(data=serializer.data,status=status.HTTP_200_OK)
             else:
                 return Response({'message':'Username not found'},status=status.HTTP_404_NOT_FOUND)

@@ -107,7 +107,7 @@ def department_generate_id():
 class Department(models.Model):
     id=models.CharField(max_length=10,default=department_generate_id,primary_key=True,editable=False)
     department_name=models.CharField(max_length=100,)
-
+    name=models.CharField(max_length=100)
     def __str__(self):
         return self.department_name
 
@@ -131,13 +131,13 @@ class ProjectDetails(models.Model):
     booking_date=models.DateField()
     total_value=models.FloatField()
     booking_amount=models.FloatField()
-    project_description=models.CharField(max_length=1000)
+    project_description=models.TextField(max_length=1000)
     package=models.ForeignKey(Package,related_name='project_details',on_delete=models.CASCADE)
     created_at=models.DateTimeField(auto_now_add=True)
     updated_at=models.DateTimeField(auto_now=True)
 
     def __str__(self):
-        return str(self.id)
+        return self.id
     def totalValue(self):
         total_value=self.objects.aggregate(Sum('total_value'))
         return total_value

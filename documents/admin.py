@@ -6,6 +6,7 @@ from django.utils.html import format_html
 @admin.register(Agreements)
 class AgreementsAdmin(admin.ModelAdmin):
     list_display=('id','agreements_image_booking_agreements','agreements_image_main_agreements','project_details')
+    fields = ('booking_agreements','main_agreements','project_details')
     list_per_page=10
     search_fields = ('id',)
 
@@ -40,6 +41,7 @@ class DocumentsAdmin(admin.ModelAdmin):
 @admin.register(ConceptPlans)
 class ConceptPlansAdmin(admin.ModelAdmin):
     list_display=('id','concept_image_concept_plans','project_details')
+    fields=('concept_plans','project_details')
     list_per_page=10
     search_fields = ('id',)
 
@@ -111,9 +113,11 @@ class StructuralDrawingsAdmin(admin.ModelAdmin):
         return format_html(f'<img src="/media/{obj.staircase_details}" style=height:50px;width:50px>')
 
     
-@admin.register(ThreeD)
-class ThreeDAdmin(admin.ModelAdmin):
+@admin.register(ThreeDModel)
+class ThreeDModelAdmin(admin.ModelAdmin):
     list_display=('id','three_d_image_three_d_elevation','project_details')
+    fields = ('three_d_elevation','project_details')
+
     list_per_page=10
     search_fields = ('id',)
 
@@ -121,9 +125,19 @@ class ThreeDAdmin(admin.ModelAdmin):
         return format_html(f'<img src="/media/{obj.three_d_elevation}" style=height:50px;width:50px>')
 
 
+class InsideStackAdmin(admin.StackedInline):
+    model=InsideImage
+class OutsideStackAdmin(admin.StackedInline):
+    model=OutsideImage
+class TwoDStackAdmin(admin.StackedInline):
+    model=TwoD
+class ThreeDStackAdmin(admin.StackedInline):
+    model=ThreeD
+
 @admin.register(GalleryImage)
 class GalleryImageAdmin(admin.ModelAdmin):
-    list_display=('id','inside_image','outside_image','two_d_image_image','three_d_image_image')
+    inlines = (InsideStackAdmin,OutsideStackAdmin,TwoDStackAdmin,ThreeDStackAdmin)
+    list_display=('id','user_name','project_details')
     list_per_page=10
     search_fields = ('id',)
 
