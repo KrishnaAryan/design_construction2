@@ -56,7 +56,7 @@ class PackageSerializer(serializers.ModelSerializer):
 class DepartmentSerializer(serializers.ModelSerializer):
     class Meta:
         model=Department
-        fields=('department_name',)
+        fields=('department_name','name')
 
 class ProjectDetailsSerializer(serializers.ModelSerializer):
     class Meta:

@@ -224,6 +224,8 @@ class GalleryImageView(APIView):
     def get(self,request):
         try:
             user=request.GET.get('username')
+            p=InsideImage.objects.filter(gallery_image__user_name__username=user)
+            print(p)
             obj=GalleryImage.objects.filter(user_name__username=user)
             if len(obj)>0:
                 serializer=GalleryImageSerializer(obj,many=True,context={'request': request})
