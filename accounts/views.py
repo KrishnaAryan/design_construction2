@@ -1,3 +1,4 @@
+from django.http.response import JsonResponse
 from django.shortcuts import render
 from rest_framework.response import Response
 from rest_framework.serializers import Serializer
@@ -77,13 +78,14 @@ class LoginView(APIView):
                 username=serializer.data['username']
                 password=serializer.data['password']
                 register=Registration.objects.filter(username=username).first()
+                print(register.id)
                 if register:
                     if username and password:
                         user=authenticate(username=username,password=password)
                         if user:
-                            return Response({
-                                'message':'login successful'
-                            },status=status.HTTP_200_OK)
+                            #return JsonResponse(register,safe=False)
+                            s=RegistrationSerializer(register)
+                            return Response(data=s.data,status=status.HTTP_200_OK)
                         else:
                             return Response({'message':'Invalid username and password'},status=status.HTTP_406_NOT_ACCEPTABLE)
                     else:
@@ -154,7 +156,7 @@ class PersonalDetailsView(APIView):
                 obj=PersonalDetails.objects.filter(registrations__username=data)
                 print(obj)
                 if len(obj)>0:
-                    serializer=PersonalDetailsSerializer1(obj,many=True)
+                    serializer=PersonalDetailsSerializer1(obj,many=True,context={'request': request})
                     return Response({'message':serializer.data},status=status.HTTP_200_OK)
                 return Response({'message':'Id is not Valid'},status=status.HTTP_404_NOT_FOUND)
             return Response({'message':'Please send id'},status=status.HTTP_400_BAD_REQUEST)
