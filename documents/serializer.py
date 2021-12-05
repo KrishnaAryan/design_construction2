@@ -28,10 +28,10 @@ class StructuralDrawingsSerializer(serializers.ModelSerializer):
         model=StructuralDrawings
         fields=('center_line_plan','footing_layout','column_details','plinth_beam_details','beam_layout','slab_details','staircase_details')
 
-# class ThreeDSerializer(serializers.ModelSerializer):
-#     class Meta:
-#         model=ThreeD
-#         fields=('three_d_elevation',)
+class ThreeDSerializer(serializers.ModelSerializer):
+    class Meta:
+        model=ThreeD
+        fields=('three_d_elevation',)
 
 class InsideSerializer(serializers.ModelSerializer):
     class Meta:

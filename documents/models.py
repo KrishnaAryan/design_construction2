@@ -120,12 +120,12 @@ def three_generate_id():
     except Exception as e:
         print(e)
 
-# class ThreeDModel(models.Model):
-#     id=models.CharField(max_length=10, default=three_generate_id,primary_key=True,editable=False)
-#     three_d_elevation=models.ImageField(upload_to='image/')
-#     project_details=models.ForeignKey(ProjectDetails,related_name='three_d',on_delete=models.CASCADE)
-#     created_at=models.DateTimeField(auto_now_add=True)
-#     updated_at=models.DateTimeField(auto_now=True)
+class ThreeDModel(models.Model):
+    id=models.CharField(max_length=10, default=three_generate_id,primary_key=True,editable=False)
+    three_d_elevation=models.ImageField(upload_to='image/')
+    project_details=models.ForeignKey(ProjectDetails,related_name='three_d',on_delete=models.CASCADE)
+    created_at=models.DateTimeField(auto_now_add=True)
+    updated_at=models.DateTimeField(auto_now=True)
     
 
 
