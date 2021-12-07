@@ -29,9 +29,9 @@ class PaymentInstallmentView(APIView):
             try:
                 username=request.GET.get('username')
                 if username is not None:
-                    obj=PaymentInstallment.objects.filter(user__username=username).first()
-                    if obj is not None:
-                        serializer=PaymentInstallmentSerializer(obj)
+                    obj=PaymentInstallment.objects.filter(user__username=username)
+                    if len(obj)>0:
+                        serializer=PaymentInstallmentSerializer(obj,many=True)
                         return Response(data=serializer.data,status=status.HTTP_200_OK)
                     else:
                         return Response({'message':'Username not found'},status=status.HTTP_404_NOT_FOUND)
