@@ -2,6 +2,7 @@ from django.db import models
 from accounts.models import *
 # Create your models here.
 
+#creating a id for project_tracker
 def project_tracker_generate_id():
     try:
         id=ProjectTracker.objects.count()
@@ -11,7 +12,7 @@ def project_tracker_generate_id():
             return f"DCB{1001}"
     except Exception as e:
         print(e)
-
+#creating model for Project_tracker
 class ProjectTracker(models.Model):
     id=models.CharField(max_length=10,default=project_tracker_generate_id,primary_key=True,editable=False)
     username=models.ForeignKey(Registration,related_name='project_tracker',on_delete=models.CASCADE)

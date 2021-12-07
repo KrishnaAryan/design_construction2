@@ -1,6 +1,6 @@
 from django.db import models
-
-from accounts.models import Registration
+from django.dispatch import receiver
+from accounts.models import *
 # Create your models here.
 def payment_tracker_generate_id():
     try:
@@ -20,5 +20,18 @@ class PaymentTracker(models.Model):
     total_paid=models.DecimalField(max_digits=10,decimal_places=2)
     total_amount_due=models.DecimalField(max_digits=10,decimal_places=2)
     payment_mode=models.CharField(max_length=100)
+
+
+class PaymentInstallment(models.Model):
+    user=models.ForeignKey(Registration,related_name='payment_installment',on_delete=models.CASCADE)
+    project=models.ForeignKey(ProjectDetails,related_name='project',on_delete=models.CASCADE)
+    amount=models.FloatField()
+    installment=models.CharField(max_length=50,null=True,blank=True)
+    date=models.DateField()
+    payment_mode=models.CharField(max_length=50)
+    status=models.BooleanField(default=False)
+
+    
+
 
 

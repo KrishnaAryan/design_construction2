@@ -1,6 +1,7 @@
 from django.contrib import admin
 from .models import *
 # Register your models here.
+#all data showing in admin section
 @admin.register(ProjectTracker)
 
 class ProjectTrackerAdmin(admin.ModelAdmin):

@@ -15,7 +15,10 @@ Including another URLconf
 """
 from django.urls import path
 from .views import *
+# Link for project payment_tracker.
 urlpatterns = [
         path('payment_tracker/',PaymentTrackerView.as_view() ),
+        path('installment/',PaymentInstallmentView.as_view() ),
+
     
 ]
