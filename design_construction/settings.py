@@ -47,6 +47,7 @@ INSTALLED_APPS = [
     'department',
     'insight',
     'payment_tracker',
+    'project_tracker',
     
 ]
 

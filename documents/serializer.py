@@ -30,7 +30,7 @@ class StructuralDrawingsSerializer(serializers.ModelSerializer):
 
 class ThreeDSerializer(serializers.ModelSerializer):
     class Meta:
-        model=ThreeD
+        model=ThreeDModel
         fields=('three_d_elevation',)
 
 class InsideSerializer(serializers.ModelSerializer):

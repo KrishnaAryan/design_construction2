@@ -192,9 +192,9 @@ class ThreeDView(APIView):
                     project=ProjectDetails.objects.filter(registration__username=username).first()
                     print(project)
                     if project is not None:
-                        obj=ThreeD.objects.filter(project_details__id=project.id).first()
+                        obj=ThreeDModel.objects.filter(project_details__id=project.id).first()
                         if obj is not None:
-                            serializer=ThreeDSerializer(obj)
+                            serializer=ThreeDSerializer(obj,context={'request':request})
                             return Response(data=serializer.data,status=status.HTTP_200_OK)
                         else:
                             return Response({'message':'Id not found'},status=status.HTTP_404_NOT_FOUND)
