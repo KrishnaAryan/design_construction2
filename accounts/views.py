@@ -153,6 +153,7 @@ class PersonalDetailsView(APIView):
     def get(self,request):
         try:
             data=request.GET.get('username')
+            data1=request.GET.get('id')
             if data is not None:
                 print(data)
                 obj=PersonalDetails.objects.filter(registrations__username=data)
@@ -161,7 +162,12 @@ class PersonalDetailsView(APIView):
                     serializer=PersonalDetailsSerializer1(obj,many=True,context={'request': request})
                     return Response({'message':serializer.data},status=status.HTTP_200_OK)
                 return Response({'message':'Id is not Valid'},status=status.HTTP_404_NOT_FOUND)
-            return Response({'message':'Please send id'},status=status.HTTP_400_BAD_REQUEST)
+            elif data1:
+                obj=PersonalDetails.objects.filter(registrations__id=data1)
+                serializer=PersonalDetailsSerializer(obj,many=True,context={'request':request})
+                return Response({'message':serializer.data},status=status.HTTP_200_OK)
+            else:    
+                return Response({'message':'Please send id'},status=status.HTTP_400_BAD_REQUEST)
         except Exception as e:
             print(e)
             return Response({'message':'somthing went wrong'},status=status.HTTP_400_BAD_REQUEST)
@@ -223,7 +229,7 @@ class ProjectDetailsView(APIView):
             id=request.GET.get('id')
             
             if id:
-                obj=ProjectDetails.objects.filter(id=int(id)).first()
+                obj=ProjectDetails.objects.filter(id=id).first()
                 if obj is not None:
                     serializer=SingleProjectSerializer(obj)
                     return Response({'message':serializer.data},status=status.HTTP_200_OK)
@@ -280,9 +286,9 @@ class TeamView(APIView):
                 else:
                     return Response({'message':'Team is not there'},status=status.HTTP_404_NOT_FOUND)
             elif project_id:
-                obj=Team.objects.filter(project_details__id=int(project_id))
+                obj=Team.objects.filter(project_details__id=project_id)
                 if len(obj)>0:
-                    serializer=TeamSerializer(obj,many=True)
+                    serializer=TeamSerializer(obj,many=True,context={'request':request})
                     return Response(data=serializer.data,status=status.HTTP_200_OK)
                 else:
                     return Response(data='No Team Assign there',status=status.HTTP_404_NOT_FOUND)

@@ -30,6 +30,7 @@ class PaymentInstallmentView(APIView):
     def get(self,request):
             try:
                 username=request.GET.get('username')
+                project_id = request.GET.get('project_id')
                 if username is not None:
                     obj=PaymentInstallment.objects.filter(user__username=username)
                     obj1=PaymentTracker.objects.filter(user__username=username)
@@ -41,6 +42,10 @@ class PaymentInstallmentView(APIView):
                         return Response({'payment_installment':serializer.data,'payment_tracker':serializer1.data},status=status.HTTP_200_OK)
                     else:
                         return Response({'message':'Username not found'},status=status.HTTP_404_NOT_FOUND)
+                elif project_id:
+                    obj = PaymentInstallment.objects.filter(project__id=project_id)
+                    serializer = PaymentInstallmentSerializer(obj,many=True)
+                    return Response({'message':serializer.data},status=status.HTTP_200_OK)
                 else:
                     return Response({'message':'Username is empty'},status=status.HTTP_406_NOT_ACCEPTABLE)       
             except Exception as e:

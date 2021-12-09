@@ -45,6 +45,7 @@ class DocumentsView(APIView):
     def get(self,request):
             try:
                 username=request.GET.get('username')
+                id =request.GET.get('id')
                 if username is not None:
                     project=ProjectDetails.objects.filter(registration__username=username).first()
                     print(project)
@@ -57,6 +58,11 @@ class DocumentsView(APIView):
                             return Response({'message':'Id not found'},status=status.HTTP_404_NOT_FOUND)
                     else:
                         return Response({'message':'No Any  Document Found'},status=status.HTTP_404_NOT_FOUND)
+                elif id is not None:
+                    obj=Documents.objects.filter(id=id)
+                    serializer=DocumentsSerializer(obj,many=True,context={'request': request})
+                    return Response(data=serializer.data,status=status.HTTP_200_OK)
+
                 else:
                     return Response({'message':'Id is empty'},status=status.HTTP_406_NOT_ACCEPTABLE)       
             except Exception as e:

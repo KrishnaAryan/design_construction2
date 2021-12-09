@@ -11,10 +11,16 @@ class ProjectView(APIView):
     def get(self,request):
         try:
             username=request.GET.get('username')
+            project_id=request.GET.get('project_id')
             obj=ProjectTracker.objects.filter(username__username=username)
             if obj:
                 serializer=ProjecTrackeSerializer(obj,many=True)
                 return Response({"message":serializer.data},status=status.HTTP_200_OK)
+            elif project_id:
+                obj =ProjectTracker.objects.filter(project__id=project_id)
+                serializer = ProjecTrackeSerializer(obj,many=True)
+                return Response({'message':serializer.data},status=status.HTTP_200_OK)
+            
             else:
                     return Response({'message':'Username not found'},status=status.HTTP_404_NOT_FOUND)
         except Exception as e:

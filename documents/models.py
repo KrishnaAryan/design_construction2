@@ -24,6 +24,9 @@ class Agreements(models.Model):
     def __str__(self):
         return self.id
 
+    class Meta:
+        verbose_name='agreement'
+
 def document_generate_id():
     try:
         id=Documents.objects.count()
@@ -45,6 +48,9 @@ class Documents(models.Model):
     created_at=models.DateTimeField(auto_now_add=True)
     updated_at=models.DateTimeField(auto_now=True)
 
+    class Meta:
+        verbose_name='document'
+
 def concept_plan_generate_id():
     try:
         id=ConceptPlans.objects.count()
@@ -61,6 +67,10 @@ class ConceptPlans(models.Model):
     project_details=models.ForeignKey(ProjectDetails,related_name='concept_plans',on_delete=models.CASCADE)
     created_at=models.DateTimeField(auto_now_add=True)
     updated_at=models.DateTimeField(auto_now=True)
+
+    class Meta:
+        verbose_name='conceptplan'
+
 def working_drawings_generate_id():
     try:
         id=WorkingDrawings.objects.count()
@@ -86,6 +96,9 @@ class WorkingDrawings(models.Model):
     created_at=models.DateTimeField(auto_now_add=True)
     updated_at=models.DateTimeField(auto_now=True)
 
+    class Meta:
+        verbose_name='workingdrawing'
+
 def structural_drawing_generate_id():
     try:
         id=StructuralDrawings.objects.count()
@@ -109,6 +122,9 @@ class StructuralDrawings(models.Model):
     project_details=models.ForeignKey(ProjectDetails,related_name='structural_drawings',on_delete=models.CASCADE)
     created_at=models.DateTimeField(auto_now_add=True)
     updated_at=models.DateTimeField(auto_now=True)
+
+    class Meta:
+        verbose_name='structuraldrawing'
     
 def three_generate_id():
     try:
@@ -126,6 +142,8 @@ class ThreeDModel(models.Model):
     project_details=models.ForeignKey(ProjectDetails,related_name='three_d',on_delete=models.CASCADE)
     created_at=models.DateTimeField(auto_now_add=True)
     updated_at=models.DateTimeField(auto_now=True)
+
+    
     
 
 

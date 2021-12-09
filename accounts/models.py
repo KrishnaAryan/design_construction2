@@ -27,6 +27,9 @@ class Registration(AbstractUser):
     updated_at=models.DateTimeField(auto_now=True)
     def __str__(self):
         return self.username
+
+    class Meta:
+        verbose_name='user'
     
     # def save(self):
     #     user = super(self,Registration)
@@ -72,6 +75,9 @@ class PersonalDetails(models.Model):
     updated_at=models.DateTimeField(auto_now=True)
     def __str__(self):
         return self.full_name
+
+    class Meta:
+        verbose_name='personaldetail'
     
 def package_generate_id():
     try:
@@ -144,6 +150,9 @@ class ProjectDetails(models.Model):
     def totalAmount(self):
         total_amount=self.objects.aggregate(Sum('booking_amount'))
         return total_amount
+
+    class Meta:
+        verbose_name='projectdetail'
 
 
 
