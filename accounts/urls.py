@@ -12,6 +12,7 @@ urlpatterns = [
     path('logout/',LogOutView.as_view()),
     path('forget_password/',ForgetPassword.as_view()),
     path('otpverify/',VerifyOtp.as_view()),
+    path('resend_otp/',resend_otp)
     
     
 ]

@@ -8,7 +8,7 @@ from django.utils.html import format_html
 # from django.contrib.auth import get_user_model
 # from django.contrib.auth.admin import UserAdmin
 admin.site.site_header=' '
-admin.site.index_title='𝕎𝕖𝕝𝕔𝕠𝕞𝕖 𝕥𝕠 𝕊𝕦𝕡𝕖𝕣 𝔸𝕕𝕞𝕚𝕟 ℙ𝕒𝕟𝕖𝕝'
+admin.site.index_title='𓊈𒆜🆆🅴🅻🅲🅾🅼🅴 🆃🅾  🆂🆄🅿🅴🆁 🅰🅳🅼🅸🅽 🅿🅰🅽🅴🅻𒆜𓊉'
 # Register your models here.
 # @admin.register(Registration)
 # class RegistrationAdmin(admin.ModelAdmin)

@@ -6,11 +6,13 @@ from rest_framework.serializers import Serializer
 from .testingSerializer import *
 from .serializer import *
 from rest_framework.views import APIView
+from rest_framework.decorators import api_view
 from rest_framework import status
 from django.contrib.auth import authenticate
 from django.contrib.auth import logout
 import random
 from .sendMail import *
+from django.core.cache import cache
 
 # Create your views here.
 
@@ -306,6 +308,8 @@ class TeamView(APIView):
         except Exception as e:
             print(e)
             return Response({'message':'something went wrong'},status=status.HTTP_400_BAD_REQUEST)
+
+
 class VerifyOtp(APIView):
     def post(self,request):
         try:
@@ -371,4 +375,35 @@ class ForgetPassword(APIView):
         except Exception as e:
             print(e)
             return Response({'message':'somthing went wrong'},status=status.HTTP_400_BAD_REQUEST)
-            
+
+@api_view(['POST'])          
+def resend_otp(request):
+    try:
+        data=request.data
+        print(data)
+        if data:        
+            email=data['email'] 
+            if email:
+                obj=Registration.objects.filter(email=email).first()
+                # print(obj.mobileNumber,cache.get(obj.mobileNumber))
+                if cache.get(obj.email) :
+                    return Response({'message':'otp already sent try after 2 minutes 'f'{obj.email}',},status=status.HTTP_200_OK)
+                print(obj)
+                otp=random.randint(999,9999)
+                activation_url=f'{otp}'
+                confirm=send_otp(obj.email,obj.first_name,activation_url)
+                if confirm ==True:
+                    obj.otp=otp
+                    obj.save()
+                    cache.set(obj.email,obj.otp,60*2)
+                return Response({'message':'resend otp successfully'},status=status.HTTP_200_OK)
+                #return Response({'message':'mobileNumber is not valid'},status=status.HTTP_406_NOT_ACCEPTABLE)
+            return Response({'message':'Please send email'},status=status.HTTP_406_NOT_ACCEPTABLE)
+        return Response({'message':'Please send mobole'},status=status.HTTP_406_NOT_ACCEPTABLE)
+    except Exception as e:
+        import os,sys
+        exc_type, exc_obj, exc_tb = sys.exc_info()
+        fname = os.path.split(exc_tb.tb_frame.f_code.co_filename)[1]
+        print(exc_type, fname, exc_tb.tb_lineno)
+        print(e)
+        return Response({'message':'somthing went wrong'},status=status.HTTP_500_INTERNAL_SERVER_ERROR)
