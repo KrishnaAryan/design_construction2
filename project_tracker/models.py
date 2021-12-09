@@ -17,22 +17,32 @@ class ProjectTracker(models.Model):
     id=models.CharField(max_length=10,default=project_tracker_generate_id,primary_key=True,editable=False)
     username=models.ForeignKey(Registration,related_name='project_tracker',on_delete=models.CASCADE)
     project=models.ForeignKey(ProjectDetails,related_name='projecttracker',on_delete=models.CASCADE)
-    excavation=models.CharField(max_length=5)
-    foundation=models.CharField(max_length=5)
-    plinth_stage=models.CharField(max_length=5)
-    gf_brick_work=models.CharField(max_length=5)
-    gf_slab=models.CharField(max_length=5)
-    first_floor_brick_work=models.CharField(max_length=5)
-    first_slab=models.CharField(max_length=5)
-    electrical_works=models.CharField(max_length=5)
-    plumbing_works=models.CharField(max_length=5)
-    wood_grill_works=models.CharField(max_length=5)
-    internal_plastering=models.CharField(max_length=5)
-    external_plastering=models.CharField(max_length=5)
-    flooring_tiling=models.CharField(max_length=5)
-    painting=models.CharField(max_length=5)
-    finishing=models.CharField(max_length=5)
+    excavation=models.FloatField()
+    foundation=models.FloatField()
+    plinth_stage=models.FloatField()
+    gf_brick_work=models.FloatField()
+    gf_slab=models.FloatField()
+    first_floor_brick_work=models.FloatField()
+    first_slab=models.FloatField()
+    electrical_works=models.FloatField()
+    plumbing_works=models.FloatField()
+    wood_grill_works=models.FloatField()
+    internal_plastering=models.FloatField()
+    external_plastering=models.FloatField()
+    flooring_tiling=models.FloatField()
+    painting=models.FloatField()
+    finishing=models.FloatField()
 
     def __str__(self):
-        return self.excavation
+        return self.id
+
+    def calculate_percentage(self):
+        #print(self.finishing,type(self.finishing))
+        #return self.finishing+self.flooring_tiling
+        sum=self.excavation+self.foundation+self.plinth_stage+self.gf_brick_work
+        +self.gf_slab+self.first_floor_brick_work+self.first_slab+self.electrical_works
+        +self.plumbing_works+self.wood_grill_works+self.internal_plastering
+        +self.external_plastering+self.flooring_tiling+self.painting+self.finishing
+        p= (sum*15)//100
+        return int(p)
 

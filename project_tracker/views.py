@@ -1,5 +1,4 @@
 from django.shortcuts import render
-
 from project_tracker.serializer import ProjecTrackeSerializer
 from .models import *
 from rest_framework.response import Response
@@ -15,7 +14,7 @@ class ProjectView(APIView):
             obj=ProjectTracker.objects.filter(username__username=username)
             if obj:
                 serializer=ProjecTrackeSerializer(obj,many=True)
-                return Response(data=serializer.data,status=status.HTTP_200_OK)
+                return Response({"message":serializer.data},status=status.HTTP_200_OK)
             else:
                     return Response({'message':'Username not found'},status=status.HTTP_404_NOT_FOUND)
         except Exception as e:

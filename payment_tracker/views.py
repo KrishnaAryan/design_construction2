@@ -1,4 +1,6 @@
 from django.shortcuts import render
+from project_tracker.models import ProjectTracker
+from project_tracker.serializer import ProjecTrackeSerializer
 from rest_framework.response import Response
 from rest_framework.serializers import Serializer
 from .serializer import *
@@ -30,9 +32,13 @@ class PaymentInstallmentView(APIView):
                 username=request.GET.get('username')
                 if username is not None:
                     obj=PaymentInstallment.objects.filter(user__username=username)
-                    if len(obj)>0:
+                    obj1=PaymentTracker.objects.filter(user__username=username)
+                #return Response({"message":serializer.data},status=status.HTTP_200_OK)
+                    if len(obj)>0 or len(obj1)>0:
+                        serializer1=PaymentTrackerSerializer(obj1,many=True)
+
                         serializer=PaymentInstallmentSerializer(obj,many=True)
-                        return Response(data=serializer.data,status=status.HTTP_200_OK)
+                        return Response({'payment_installment':serializer.data,'payment_tracker':serializer1.data},status=status.HTTP_200_OK)
                     else:
                         return Response({'message':'Username not found'},status=status.HTTP_404_NOT_FOUND)
                 else:

@@ -192,9 +192,9 @@ class ThreeDView(APIView):
                     project=ProjectDetails.objects.filter(registration__username=username).first()
                     print(project)
                     if project is not None:
-                        obj=ThreeDModel.objects.filter(project_details__id=project.id).first()
+                        obj=ThreeD.objects.filter(project_details__id=project.id).first()
                         if obj is not None:
-                            serializer=ThreeDSerializer(obj,context={'request':request})
+                            serializer=ThreeDSerializer(obj)
                             return Response(data=serializer.data,status=status.HTTP_200_OK)
                         else:
                             return Response({'message':'Id not found'},status=status.HTTP_404_NOT_FOUND)
@@ -224,8 +224,8 @@ class GalleryImageView(APIView):
     def get(self,request):
         try:
             user=request.GET.get('username')
-            p=InsideImage.objects.filter(gallery_image__user_name__username=user)
-            print(p)
+            # p=InsideImage.objects.filter(gallery_image__user_name__username=user)
+            # print(p)
             obj=GalleryImage.objects.filter(user_name__username=user)
             if len(obj)>0:
                 serializer=GalleryImageSerializer(obj,many=True,context={'request': request})
