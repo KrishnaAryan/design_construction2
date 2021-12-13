@@ -36,6 +36,9 @@ class ProjectTracker(models.Model):
     def __str__(self):
         return self.id
 
+    class Meta:
+        verbose_name_plural='Project Tracker'
+
     def calculate_percentage(self):
         #print(self.finishing,type(self.finishing))
         #return self.finishing+self.flooring_tiling

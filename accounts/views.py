@@ -1,19 +1,21 @@
+from django.contrib.auth.models import Permission
 from django.http.response import JsonResponse
 from django.shortcuts import render
 from rest_framework.response import Response
 from rest_framework.serializers import Serializer
-
+from rest_framework.permissions import IsAdminUser
 from .testingSerializer import *
 from .serializer import *
 from rest_framework.views import APIView
 from rest_framework.decorators import api_view
 from rest_framework import status
-from django.contrib.auth import authenticate
+from django.contrib.auth import authenticate, login
 from django.contrib.auth import logout
 import random
 from .sendMail import *
+from django.core.cache import cache
 # from django.core.cache import cache
-
+from rest_framework.permissions import IsAuthenticated
 # Create your views here.
 
 """This API is used to post data into database"""
@@ -22,13 +24,19 @@ class RegistrationView(APIView):
     def get(self,request):
         try:
             username=request.GET.get('username')
-            if username:
-                obj=Registration.objects.filter(username=username).first()
-                if obj:
-                    serializer=RegistrationSerializer(obj)
-                    return Response(data=serializer.data,status=status.HTTP_200_OK)
-                else:
-                    return Response({'message':'Username not found'},status=status.HTTP_404_NOT_FOUND)
+            if cache.get(username):
+                print('data from cache')
+                register=cache.get(username)
+                return JsonResponse(register,safe=False)
+            else:
+                if username:
+                    obj=Registration.objects.filter(username=username).first()
+                    if obj:
+                        serializer=RegistrationSerializer(obj)
+                        cache.set(serializer.data['username'],serializer.data)
+                        return Response(data=serializer.data,status=status.HTTP_200_OK)
+                    else:
+                        return Response({'message':'Username not found'},status=status.HTTP_404_NOT_FOUND)
         except Exception as e:
             print(e)
             return Response({'message':'Something went wrong'},status=status.HTTP_400_BAD_REQUEST)
@@ -413,3 +421,26 @@ class ForgetPassword(APIView):
 #         print(exc_type, fname, exc_tb.tb_lineno)
 #         print(e)
 #         return Response({'message':'somthing went wrong'},status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+
+
+class SubAdminLoginView(APIView):
+    # permission_classes=[IsAdminUser]
+    def post(self,request):
+        try:
+            print('data')
+            data = request.data
+            serializer =  LoginSerializer(data=data)
+            if not serializer.is_valid():
+                return Response({'message':serializer.errors},status=status.HTTP_406_NOT_ACCEPTABLE)
+            if  Registration.objects.filter(username=serializer.data['username'],is_staff=False).exists():
+                return Response({'message':'unauthorized user'},status=status.HTTP_406_NOT_ACCEPTABLE)
+            obj=Registration.objects.filter(username=serializer.data['username']).first()   
+            user =authenticate(username=serializer.data['username'],password=serializer.data['password'])
+            if user is None:
+                return Response({'message':'username and password is not exist'},status=status.HTTP_406_NOT_ACCEPTABLE)
+            return Response({'message':'Login successfully'},status=status.HTTP_200_OK)
+        except Exception as e:
+            print(e)
+            return Response({'message':'somthing went wrong'},status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+
+

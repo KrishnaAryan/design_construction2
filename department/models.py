@@ -20,6 +20,9 @@ class Finance(models.Model):
     def __str__(self):
         return self.emp_name
 
+    class Meta:
+        verbose_name_plural='Finance'
+
 def project_coordination_id():
     id=ProjectCoordination.objects.count()
     if id is not None:
@@ -36,6 +39,9 @@ class ProjectCoordination(models.Model):
     updated_at=models.DateTimeField(auto_now=True)
     def __str__(self):
         return self.emp_name
+
+    class Meta:
+        verbose_name_plural='Project Coordination'
 
 
 def design_team_id():
@@ -55,6 +61,9 @@ class DesignTeam(models.Model):
     def __str__(self):
         return self.emp_name
 
+    class Meta:
+        verbose_name_plural='Design Team'
+
 
 def execution_team_id():
     id=ExecutionTeam.objects.count()
@@ -72,6 +81,9 @@ class ExecutionTeam(models.Model):
     updated_at=models.DateTimeField(auto_now=True)
     def __str__(self):
         return self.emp_name
+
+    class Meta:
+        verbose_name_plural='Execution Team'
 
 
 

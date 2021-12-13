@@ -15,7 +15,7 @@ class ProjectView(APIView):
             obj=ProjectTracker.objects.filter(username__username=username)
             if obj:
                 serializer=ProjecTrackeSerializer(obj,many=True)
-                return Response({"message":serializer.data},status=status.HTTP_200_OK)
+                return Response(data=serializer.data,status=status.HTTP_200_OK)
             elif project_id:
                 obj =ProjectTracker.objects.filter(project__id=project_id)
                 serializer = ProjecTrackeSerializer(obj,many=True)

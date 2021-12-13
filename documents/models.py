@@ -25,7 +25,8 @@ class Agreements(models.Model):
         return self.id
 
     class Meta:
-        verbose_name='agreement'
+        #verbose_name='agreement'
+        verbose_name_plural='agreement'
 
 def document_generate_id():
     try:
@@ -49,7 +50,8 @@ class Documents(models.Model):
     updated_at=models.DateTimeField(auto_now=True)
 
     class Meta:
-        verbose_name='document'
+        #verbose_name='document'
+        verbose_name_plural='document'
 
 def concept_plan_generate_id():
     try:
@@ -69,7 +71,8 @@ class ConceptPlans(models.Model):
     updated_at=models.DateTimeField(auto_now=True)
 
     class Meta:
-        verbose_name='conceptplan'
+        #verbose_name='conceptplan'
+        verbose_name_plural='concept Plan'
 
 def working_drawings_generate_id():
     try:
@@ -97,7 +100,8 @@ class WorkingDrawings(models.Model):
     updated_at=models.DateTimeField(auto_now=True)
 
     class Meta:
-        verbose_name='workingdrawing'
+        #verbose_name='workingdrawing'
+        verbose_name_plural='working Drawing'
 
 def structural_drawing_generate_id():
     try:
@@ -124,7 +128,8 @@ class StructuralDrawings(models.Model):
     updated_at=models.DateTimeField(auto_now=True)
 
     class Meta:
-        verbose_name='structuraldrawing'
+        #verbose_name='structuraldrawing'
+        verbose_name_plural='structural Drawing'
     
 def three_generate_id():
     try:
@@ -144,7 +149,8 @@ class ThreeDModel(models.Model):
     updated_at=models.DateTimeField(auto_now=True)
 
     
-    
+    class Meta:
+        verbose_name_plural='Three-D Image'
 
 
 def gallery_generate_id():
@@ -165,22 +171,30 @@ class GalleryImage(models.Model):
     # two_d_image=models.ImageField(upload_to='two_d/')
     # three_d_image=models.ImageField(upload_to='three_d/')
 
-
+    class Meta:
+        verbose_name_plural='Gallery Image'
 
 class InsideImage(models.Model):
     gallery_image=models.ForeignKey(GalleryImage,related_name='inside',on_delete=models.CASCADE)
     inside=models.ImageField(upload_to='inside/')
+    class Meta:
+        verbose_name_plural='Inside Image'
 
 class OutsideImage(models.Model):
     gallery_image=models.ForeignKey(GalleryImage,related_name='outside',on_delete=models.CASCADE)
     outside=models.ImageField(upload_to='outside/')
+    class Meta:
+        verbose_name_plural='Outside Image'
 
 class TwoD(models.Model):
     gallery_image=models.ForeignKey(GalleryImage,related_name='two_d',on_delete=models.CASCADE)
     two_d=models.ImageField(upload_to='two_d/')
+    class Meta:
+        verbose_name_plural='Two-D'
 
 class ThreeD(models.Model):
     gallery_image=models.ForeignKey(GalleryImage,related_name='three_d',on_delete=models.CASCADE)
     three_d=models.ImageField(upload_to='three_d/')
-
+    class Meta:
+        verbose_name_plural='Three-D'
 

@@ -29,7 +29,8 @@ class Registration(AbstractUser):
         return self.username
 
     class Meta:
-        verbose_name='user'
+        # verbose_name='user'
+        verbose_name_plural='user'
     
     # def save(self):
     #     user = super(self,Registration)
@@ -77,7 +78,8 @@ class PersonalDetails(models.Model):
         return self.full_name
 
     class Meta:
-        verbose_name='personaldetail'
+        #verbose_name='personaldetail'
+        verbose_name_plural='personal Detail'
     
 def package_generate_id():
     try:
@@ -100,6 +102,9 @@ class Package(models.Model):
     def __str__(self):
         return self.package_names
 
+    class Meta:
+        verbose_name_plural='Package'
+
 def department_generate_id():
     try:
         id=Department.objects.count()
@@ -116,6 +121,9 @@ class Department(models.Model):
     name=models.CharField(max_length=100)
     def __str__(self):
         return self.department_name
+
+    class Meta:
+        verbose_name_plural='Department'
 
 def projectDetails_generate_id():
     try:
@@ -152,7 +160,9 @@ class ProjectDetails(models.Model):
         return total_amount
 
     class Meta:
-        verbose_name='projectdetail'
+        #verbose_name='projectdetail'
+        verbose_name_plural='project Detail'
+        
 
 
 
@@ -182,3 +192,6 @@ class Team(models.Model):
     updated_at=models.DateTimeField(auto_now=True)
     def __str__(self):
         return self.name
+
+    class Meta:
+        verbose_name_plural='Team'

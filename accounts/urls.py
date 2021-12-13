@@ -13,6 +13,5 @@ urlpatterns = [
     path('forget_password/',ForgetPassword.as_view()),
     path('otp_verify/',VerifyOtp.as_view()),
     # path('resend_otp/',resend_otp)
-    
-    
+    path('sub_admin_login/',SubAdminLoginView.as_view()),
 ]
