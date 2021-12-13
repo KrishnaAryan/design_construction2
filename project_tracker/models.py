@@ -42,10 +42,57 @@ class ProjectTracker(models.Model):
     def calculate_percentage(self):
         #print(self.finishing,type(self.finishing))
         #return self.finishing+self.flooring_tiling
-        sum=self.excavation+self.foundation+self.plinth_stage+self.gf_brick_work
-        +self.gf_slab+self.first_floor_brick_work+self.first_slab+self.electrical_works
-        +self.plumbing_works+self.wood_grill_works+self.internal_plastering
-        +self.external_plastering+self.flooring_tiling+self.painting+self.finishing
-        p= (sum*15)//100
-        return int(p)
+        sum=(self.excavation+self.foundation+self.plinth_stage
+        +self.gf_brick_work+self.gf_slab+self.first_floor_brick_work+
+        self.first_slab+self.electrical_works+self.plumbing_works+
+        self.wood_grill_works+self.internal_plastering+self.external_plastering+
+        self.flooring_tiling+self.painting+self.finishing)
+        print(sum)
+        p= sum/15
+        return p/100
+
+    def get_excavation(self):
+        return self.excavation/100
+
+    def get_foundation(self):
+        return self.foundation/100
+
+    def get_plinth_stage(self):
+        return self.plinth_stage/100
+
+    def get_gf_brick_work(self):
+        return self.gf_brick_work/100
+
+    def get_gf_slab(self):
+        return self.gf_slab/100
+
+    def get_first_floor_brick_work(self):
+        return self.first_floor_brick_work/100
+
+    def get_first_slab(self):
+        return self.first_slab/100
+
+    def get_electrical_works(self):
+        return self.electrical_works/100
+
+    def get_plumbing_works(self):
+        return self.plumbing_works/100
+
+    def get_wood_grill_works(self):
+        return self.wood_grill_works/100
+
+    def get_internal_plastering(self):
+        return self.internal_plastering/100
+
+    def get_external_plastering(self):
+        return self.foundation/100
+
+    def get_flooring_tiling(self):
+        return self.foundation/100
+
+    def get_painting(self):
+        return self.painting/100
+
+    def get_finishing(self):
+        return self.finishing/100
 
