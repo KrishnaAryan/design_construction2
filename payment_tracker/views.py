@@ -13,9 +13,9 @@ class PaymentTrackerView(APIView):
             try:
                 username=request.GET.get('username')
                 if username is not None:
-                    obj=PaymentTracker.objects.filter(user__username=username).first()
+                    obj=PaymentTracker.objects.filter(user__username=username)
                     if obj is not None:
-                        serializer=PaymentTrackerSerializer(obj)
+                        serializer=PaymentTrackerSerializer(obj,many=True)
                         return Response(data=serializer.data,status=status.HTTP_200_OK)
                     else:
                         return Response({'message':'Username not found'},status=status.HTTP_404_NOT_FOUND)
