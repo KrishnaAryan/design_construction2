@@ -97,3 +97,9 @@ class SingleProjectSerializer(serializers.ModelSerializer):
         model=ProjectDetails
         fields=['id','booking_date','total_value','booking_amount','project_description','package','created_at','team',
       'registration','documents']
+
+
+class NotificationSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Notification
+        fields = '__all__'

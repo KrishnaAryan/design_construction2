@@ -80,3 +80,15 @@ class TeamAdmin(admin.ModelAdmin):
     def profile_image(self,obj):
         return format_html(f'<img src="/media/{obj.profile_pic}" style=height:50px;width:50px>')
 
+@admin.register(Notification)
+class NotificationAdmin(admin.ModelAdmin):
+    list_display=('id','user','subject','message')
+    # list_display_links = ('registration','project_details','name','position','mobile_number','profile_image')
+    # fields=('id','user','subject','message')
+    list_per_page=10
+    search_fields = ('user',)
+
+    
+
+
+

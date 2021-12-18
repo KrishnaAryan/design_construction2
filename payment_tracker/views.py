@@ -31,23 +31,24 @@ class PaymentInstallmentView(APIView):
             try:
                 username=request.GET.get('username')
                 project_id = request.GET.get('project_id')
-                if username is not None:
-                    obj=PaymentInstallment.objects.filter(user__username=username)
-                    obj1=PaymentTracker.objects.filter(user__username=username)
+                print("username",username)
+                if username:
+                    obj=Registration.objects.filter(username=username)
+                    print("shiv",obj)
                 #return Response({"message":serializer.data},status=status.HTTP_200_OK)
-                    if len(obj)>0 or len(obj1)>0:
-                        serializer1=PaymentTrackerSerializer(obj1,many=True)
+                    if len(obj)>0 :
+                        serializer1=PaymetInstallmentSerializer1(obj,many=True)
 
-                        serializer=PaymentInstallmentSerializer(obj,many=True)
-                        return Response({'payment_installment':serializer.data,'payment_tracker':serializer1.data},status=status.HTTP_200_OK)
+                        #serializer=PaymentInstallmentSerializer(obj,many=True)
+                        return Response(data=serializer1.data,status=status.HTTP_200_OK)
                     else:
-                        return Response({'message':'Username not found'},status=status.HTTP_404_NOT_FOUND)
+                        return Response(data='Username not found',status=status.HTTP_404_NOT_FOUND)
                 elif project_id:
                     obj = PaymentInstallment.objects.filter(project__id=project_id)
                     serializer = PaymentInstallmentSerializer(obj,many=True)
-                    return Response({'message':serializer.data},status=status.HTTP_200_OK)
+                    return Response(data=serializer.data,status=status.HTTP_200_OK)
                 else:
-                    return Response({'message':'Username is empty'},status=status.HTTP_406_NOT_ACCEPTABLE)       
+                    return Response(data ='Username is empty',status=status.HTTP_406_NOT_ACCEPTABLE)       
             except Exception as e:
                 print(e)
                 return Response({'message':'Something went wrong'},status=status.HTTP_400_BAD_REQUEST)

@@ -444,3 +444,22 @@ class SubAdminLoginView(APIView):
             return Response({'message':'somthing went wrong'},status=status.HTTP_500_INTERNAL_SERVER_ERROR)
 
 
+class NotificationView(APIView):
+    def get(self,request):
+        try:
+            username=request.GET.get('username')
+            if username is None:
+                return Response(data='username is required',status=status.HTTP_406_NOT_ACCEPTABLE)
+            obj = Notification.objects.filter(user__username=username)
+            if len(obj)>0:
+                serializer=NotificationSerializer(obj,many=True)
+
+                return Response(data=serializer.data,status=status.HTTP_200_OK)
+            else:
+                return Response(data='No Notification There',status=status.HTTP_200_OK)
+
+        except Exception as e:
+            print(e)
+            return Response(data='somthing went wrong',status=status.HTTP_400_BAD_REQUEST)
+
+

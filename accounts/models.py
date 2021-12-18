@@ -3,6 +3,9 @@ from django.contrib.auth.models import AbstractUser
 from django.db.models.signals import pre_save
 from django.dispatch import receiver
 from django.db.models import Sum
+from django.db.models.signals import post_save
+from django.dispatch import receiver
+from .sendMail import *
 # Create your models here.
 def customer_generate_id():
     try:
@@ -195,3 +198,21 @@ class Team(models.Model):
 
     class Meta:
         verbose_name_plural='Team'
+
+
+class Notification(models.Model):
+    user=models.ForeignKey(Registration,on_delete=models.CASCADE)
+    subject=models.CharField(max_length=50)
+    message=models.TextField()
+    created_at=models.DateTimeField(auto_now_add=True)
+    updated_at=models.DateTimeField(auto_now=True)
+
+
+
+@receiver(post_save,sender=Notification)
+def send_notification(sender,instance,**kwargs):
+    obj=instance.user
+    email=obj.email
+    send_notification_on_email(email,instance.subject,instance.message)
+    
+    # def save()

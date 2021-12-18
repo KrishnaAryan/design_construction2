@@ -19,10 +19,10 @@ class ProjectView(APIView):
             elif project_id:
                 obj =ProjectTracker.objects.filter(project__id=project_id)
                 serializer = ProjecTrackeSerializer(obj,many=True)
-                return Response({'message':serializer.data},status=status.HTTP_200_OK)
+                return Response(data=serializer.data,status=status.HTTP_200_OK)
             
             else:
-                    return Response({'message':'Username not found'},status=status.HTTP_404_NOT_FOUND)
+                    return Response(data='Username not found',status=status.HTTP_404_NOT_FOUND)
         except Exception as e:
             print(e)
-            return Response({'message':'Something went wrong'},status=status.HTTP_400_BAD_REQUEST)
+            return Response(data='Something went wrong',status=status.HTTP_400_BAD_REQUEST)

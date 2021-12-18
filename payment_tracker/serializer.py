@@ -14,3 +14,9 @@ class PaymentInstallmentSerializer(serializers.ModelSerializer):
         model=PaymentInstallment
         exclude=('user','project')
 
+class PaymetInstallmentSerializer1(serializers.ModelSerializer):
+    payment_tracker =PaymentTrackerSerializer(read_only=True,many=True)
+    payment_installment = PaymentInstallmentSerializer(read_only=True,many=True)
+    class Meta:
+        model=Registration
+        fields=['id','mobile_no','payment_tracker','payment_installment']

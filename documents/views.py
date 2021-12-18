@@ -239,7 +239,7 @@ class ThreeDView(APIView):
                     if project is not None:
                         obj=ThreeDModel.objects.filter(project_details__id=project.id).first()
                         if obj is not None:
-                            serializer=ThreeDSerializer(obj)
+                            serializer=ThreeDSerializer(obj,context={'request':request})
                             cache.set(username,serializer.data)
                             return Response(data=serializer.data,status=status.HTTP_200_OK)
                         else:
